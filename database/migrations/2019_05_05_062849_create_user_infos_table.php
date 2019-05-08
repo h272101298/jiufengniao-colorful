@@ -9,6 +9,7 @@ class CreateUserInfosTable extends Migration
     /**
      * Run the migrations.
      *
+     * 微信用户个人信息
      * @return void
      */
     public function up()

@@ -14,3 +14,4 @@ use Illuminate\Http\Request;
 */
 
 Route::post('login','WeChatController@createUser');//Login
+Route::post('proxy/apply','ProxyController@addProxyApply');//proxyApply
