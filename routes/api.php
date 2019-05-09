@@ -17,3 +17,4 @@ Route::post('login','WeChatController@createUser');//Login
 Route::post('proxy/apply','ProxyController@addProxyApply');//proxyApply
 Route::post('address','WeChatController@addUserAddress');//proxyApply
 Route::delete('address','WeChatController@delUserAddress');//proxyApply
+Route::post('default/address','WeChatController@setDefaultAddress');//proxyApply

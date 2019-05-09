@@ -110,4 +110,18 @@ class WeChatController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function setDefaultAddress(Request $post)
+    {
+        $user_id = getRedisData($post->token);
+        $id = $post->id;
+        $address = $this->handle->getAddressById($id);
+
+        if ($address->user_id != $user_id){
+            throw new \Exception('无权操作！');
+        }
+        $this->handle->setDefaultAddress($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 }
