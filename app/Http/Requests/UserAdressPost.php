@@ -34,8 +34,7 @@ class UserAdressPost extends FormRequest
     }
     public function failedValidation(Validator $validator)
     {
-        return jsonResponse([
-            'msg'=>$validator->errors()->first()
-        ],422);
+        throw new \HttpResponseException(response()->json(['msg'=>$validator->errors()->first()],
+            422));
     }
 }
