@@ -75,8 +75,10 @@ class WeChatController extends Controller
         $user_id = getRedisData($post->token);
         $id = $this->handle->addUserAddress(0,[
             'user_id'=>$user_id,
-            'city'=>$post->city,
+            'city'=>implode(',',$post->city),
             'address'=>$post->address,
+            'phone'=>$post->phone,
+            'name'=>$post->name
         ]);
         if ($post->default&&$post->default==1){
             $this->handle->setDefaultAddress($id);

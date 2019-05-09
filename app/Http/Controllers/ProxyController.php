@@ -20,7 +20,7 @@ class ProxyController extends Controller
             'user_id'=>getRedisData($post->token),
             'phone'=>$post->phone,
             'name'=>$post->name,
-            'sex'=>$post->sex,
+//            'sex'=>$post->sex,
             'bank'=>$post->bank,
             'account'=>$post->account
         ];

@@ -28,7 +28,7 @@ class ProxyApplyPost extends FormRequest
             //
             'phone'=>'required',
             'name'=>'required',
-            'sex'=>'required|numeric',
+//            'sex'=>'required|numeric',
             'bank'=>'required',
             'account'=>'required|numeric'
         ];

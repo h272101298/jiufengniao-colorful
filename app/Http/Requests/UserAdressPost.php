@@ -27,7 +27,9 @@ class UserAdressPost extends FormRequest
         return [
             //
             'city'=>'required',
-            'address'=>'required'
+            'address'=>'required',
+            'name'=>'required',
+            'phone'=>'required'
         ];
     }
     public function failedValidation(Validator $validator)
