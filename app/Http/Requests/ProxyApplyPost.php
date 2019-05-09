@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProxyApplyPost extends FormRequest
 {
@@ -35,8 +36,7 @@ class ProxyApplyPost extends FormRequest
     }
     public function failedValidation(Validator $validator)
     {
-        return jsonResponse([
-            'msg'=>$validator->errors()->first()
-        ],422);
+        throw new HttpResponseException(response()->json(['msg'=>$validator->errors()->first()],
+            422));
     }
 }
