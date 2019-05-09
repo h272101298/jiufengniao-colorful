@@ -28,6 +28,7 @@ class UserAdressPost extends FormRequest
             //
             'city'=>'required',
             'address'=>'required',
+            'address.*'=>'required',
             'name'=>'required',
             'phone'=>'required'
         ];
