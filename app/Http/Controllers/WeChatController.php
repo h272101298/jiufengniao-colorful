@@ -8,6 +8,7 @@ use App\Http\Requests\UserInfoPost;
 use App\Libraries\Wxxcx;
 use App\Modules\User\UserHandle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class WeChatController extends Controller
 {
@@ -122,6 +123,15 @@ class WeChatController extends Controller
         $this->handle->setDefaultAddress($id);
         return jsonResponse([
             'msg'=>'ok'
+        ]);
+    }
+    public function getUserAddresses()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $data = $this->handle->getUserAddresses($user_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
         ]);
     }
 }

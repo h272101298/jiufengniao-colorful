@@ -121,4 +121,14 @@ class UserHandle
     {
         return UserAddress::find($id);
     }
+    public function getUserAddresses($user_id)
+    {
+        $addresses = UserAddress::where('user_id','=',$user_id)->orderBy('default','DESC')->orderBy('id','DESC')->get();
+        if (count($addresses)!=0){
+            foreach ($addresses as $address){
+                $address->city = explode(',',$address->city);
+            }
+        }
+        return $addresses;
+    }
 }
