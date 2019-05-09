@@ -112,9 +112,15 @@ class UserHandle
         return UserAddress::where('user_id','=',$user_id)->count();
     }
     //根据id删除用户地址
-    public function delAddressById($id)
+    public function delAddressById($id,$user_id=0)
     {
         $address = UserAddress::find($id);
+        if ($address->default==1){
+            throw new \Exception('默认地址不可删除！');
+        }
+        if ($user_id&&$user_id!=$address->user_id){
+            throw new \Exception('无权操作！');
+        }
         return $address->delete();
     }
 }
