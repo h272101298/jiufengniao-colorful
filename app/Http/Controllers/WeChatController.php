@@ -7,6 +7,7 @@ use App\Http\Requests\UserAdressPost;
 use App\Http\Requests\UserInfoPost;
 use App\Libraries\Wxxcx;
 use App\Modules\User\UserHandle;
+use Illuminate\Http\Request;
 
 class WeChatController extends Controller
 {
@@ -73,7 +74,14 @@ class WeChatController extends Controller
     public function addUserAddress(UserAdressPost $post)
     {
         $user_id = getRedisData($post->token);
-        $id = $this->handle->addUserAddress(0,[
+        $id = $post->id?$post->id:0;
+        if ($id){
+            $address = $this->handle->getAddressById($id);
+            if ($address->user_id != $user_id){
+                throw new \Exception('无权操作！');
+            }
+        }
+        $this->handle->addUserAddress($id,[
             'user_id'=>$user_id,
             'city'=>implode(',',$post->city),
             'address'=>$post->address,
@@ -87,5 +95,19 @@ class WeChatController extends Controller
             'msg'=>'ok'
         ]);
     }
-//    public function
+    public function delUserAddress(Request $post)
+    {
+        $user_id = getRedisData($post->token);
+        $address = $this->handle->getAddressById($post->id);
+        if ($address->default==1){
+            throw new \Exception('不能删除默认地址！');
+        }
+        if ($address->user_id != $user_id){
+            throw new \Exception('无权操作！');
+        }
+        $this->handle->delAddressById($post->id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 }
