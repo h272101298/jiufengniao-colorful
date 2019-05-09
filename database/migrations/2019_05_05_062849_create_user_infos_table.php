@@ -18,10 +18,10 @@ class CreateUserInfosTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id')->commit('WeChatUserId');
             $table->string('name')->commit('Name');
-            $table->string('sex')->commit('sex');
-            $table->string('birthday')->commit('birthday');
+            $table->tinyInteger('sex')->commit('sex');
+//            $table->string('birthday')->commit('birthday');
             $table->string('phone')->commit('phone');
-            $table->text('desc')->nullable()->commit('description');
+//            $table->text('desc')->nullable()->commit('description');
 //            $table->
             $table->timestamps();
         });

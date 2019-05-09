@@ -58,6 +58,15 @@ class WeChatController extends Controller
             ],400);
         }
     }
+    public function getUserInfo()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $info = $this->handle->getUserInfoByUserId($user_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$info
+        ]);
+    }
     public function addUserInfo(UserInfoPost $post)
     {
         $user_id = getRedisData($post->token);
@@ -65,8 +74,8 @@ class WeChatController extends Controller
             'phone'=>$post->phone,
             'name'=>$post->name,
             'sex'=>$post->sex,
-            'birthday'=>$post->birthday,
-            'desc'=>$post->desc
+//            'birthday'=>$post->birthday,
+//            'desc'=>$post->desc
         ]);
         return response()->json([
             'msg'=>'ok'

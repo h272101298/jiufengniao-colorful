@@ -28,11 +28,11 @@ class UserInfoPost extends FormRequest
         return [
             //
             'phone'=>'required',
-            'user_id'=>'required',
+//            'user_id'=>'required',
             'name'=>'required',
             'sex'=>'required',
-            'birthday'=>'required',
-            'desc'=>'nullable'
+//            'birthday'=>'required',
+//            'desc'=>'nullable'
         ];
     }
     public function failedValidation(Validator $validator)
