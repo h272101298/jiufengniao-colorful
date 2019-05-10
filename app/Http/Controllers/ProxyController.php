@@ -51,6 +51,8 @@ class ProxyController extends Controller
     public function getProxyUsers()
     {
         $userHandle = new UserHandle();
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
         $user_id = getRedisData(Input::get('token'));
         $data = $this->handle->getProxyUsers($user_id);
         if (!empty($data)){
