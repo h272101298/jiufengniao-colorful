@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProxyApplyPost;
 use App\Modules\Proxy\ProxyHandle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class ProxyController extends Controller
 {
@@ -30,6 +31,21 @@ class ProxyController extends Controller
             ]);
         }
         throw new \Exception('系统错误！');
+    }
+
+    public function getUserProxyAmount()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $amount = $this->handle->getUserProxyAmount($user_id);
+        $list = $this->handle->getProxyAmountListCount($user_id);
+        return response()->json([
+            'msg'=>'ok',
+            'data'=>[
+                'amount'=>empty($amount)?0:$amount->real_amount,
+                'today'=>$list['today'],
+                'yesterday'=>$list['yesterday']
+            ]
+        ]);
     }
 
 }

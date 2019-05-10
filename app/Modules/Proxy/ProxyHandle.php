@@ -81,4 +81,19 @@ class ProxyHandle
     {
         return UserProxy::where('user_id','=',$user_id)->delete();
     }
+    public function getUserProxyAmount($user_id)
+    {
+        return ProxyAmount::where('user_id','=',$user_id)->first();
+    }
+
+    public function getProxyAmountListCount($user_id)
+    {
+        $db = ProxyAmountList::where('user_id','=',$user_id);
+        $today = $db->whereDay('created_at',date('Y-m-d',time()))->sum('amount');
+        $yesterday = $db->whereDay('created_at',date("Y-m-d",strtotime("-1 day")))->sum('amount');
+        return [
+            'today'=>$today,
+            'yesterday'=>$yesterday
+        ];
+    }
 }
