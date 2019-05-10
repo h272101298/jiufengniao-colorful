@@ -96,4 +96,8 @@ class ProxyHandle
             'yesterday'=>$yesterday
         ];
     }
+    public function getProxyUsers($user_id)
+    {
+        return ProxyList::where('proxy_id','=',$user_id)->get();
+    }
 }

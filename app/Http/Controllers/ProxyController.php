@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProxyApplyPost;
 use App\Modules\Proxy\ProxyHandle;
+use App\Modules\User\UserHandle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -46,6 +47,18 @@ class ProxyController extends Controller
                 'yesterday'=>$list['yesterday']
             ]
         ]);
+    }
+    public function getProxyUsers()
+    {
+        $userHandle = new UserHandle();
+        $user_id = getRedisData(Input::get('token'));
+        $data = $this->handle->getProxyUsers($user_id);
+        if (!empty($data)){
+            foreach ($data as $datum){
+                $datum->user = $userHandle->getWeChatUserById($datum->user_id);
+            }
+        }
+        return $data;
     }
 
 }
