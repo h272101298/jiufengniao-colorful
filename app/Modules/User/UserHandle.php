@@ -131,4 +131,12 @@ class UserHandle
         }
         return $addresses;
     }
+    public function getUserAddress($id)
+    {
+        $address = UserAddress::find($id);
+        if (!empty($address)){
+            $address->city = explode(',',$address->city);
+        }
+        return $address;
+    }
 }

@@ -143,4 +143,14 @@ class WeChatController extends Controller
             'data'=>$data
         ]);
     }
+    public function getUserAddress()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $id = Input::get('id');
+        $data = $this->handle->getUserAddress($id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }
