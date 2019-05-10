@@ -62,6 +62,7 @@ class UserHandle
         $info = UserInfo::where('user_id','=',$user_id)->first();
         if (empty($info)){
             $info = new UserInfo();
+            $info->user_id = $user_id;
         }
         foreach ($data as $key => $value){
             $info->$key = $value;
