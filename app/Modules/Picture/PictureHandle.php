@@ -50,7 +50,7 @@ class PictureHandle
         $db = PictureCollect::where('user_id','=',$user_id);
         return [
             'count'=>$db->count(),
-            'data'=>$db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+            'data'=>$db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get()
         ];
     }
 

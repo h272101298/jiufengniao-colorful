@@ -24,3 +24,5 @@ Route::post('user/info','WeChatController@addUserInfo');//proxyApply
 Route::get('user/info','WeChatController@getUserInfo');//proxyApply
 Route::get('user/amount','ProxyController@getUserProxyAmount');//proxyApply
 Route::get('proxy/users','ProxyController@getProxyUsers');//proxyApply
+Route::get('user/pictures','PictureController@getUserPictures');//proxyApply
+Route::post('user/picture','PictureController@addPicture');//proxyApply
