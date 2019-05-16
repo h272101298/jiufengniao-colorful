@@ -26,4 +26,4 @@ Route::get('user/amount','ProxyController@getUserProxyAmount');//proxyApply
 Route::get('proxy/users','ProxyController@getProxyUsers');//proxyApply
 Route::get('user/pictures','PictureController@getUserPictures');//proxyApply
 Route::get('pictures','PictureController@getPictures');//proxyApply
-Route::post('picture','PictureController@addPicture');//proxyApply
+Route::post('picture','PictureController@addPicture');//pro
