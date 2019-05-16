@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePicturesTable extends Migration
+class CreateSignRecordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreatePicturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pictures', function (Blueprint $table) {
+        Schema::create('sign_records', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id')->default(0);
-            $table->tinyInteger('type')->default(1);//1for 作品 2 for 素材
-            $table->string('url');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreatePicturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pictures');
+        Schema::dropIfExists('sign_records');
     }
 }

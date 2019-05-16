@@ -39,4 +39,26 @@ class PictureController extends Controller
             'data'=>$data
         ]);
     }
+    public function getPictures()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $user_id = getRedisData(Input::get('token'));
+        $type = Input::get('type',1);
+        switch ($type){
+            case 1:
+                $data = $this->handle->getPictures($page,$limit,1,0,2);
+                break;
+            case 2:
+                $data = $this->handle->getPictures($page,$limit,0,0,2,$user_id);
+                break;
+            case 3:
+                $data = $this->handle->getPictures($page,$limit,0,$user_id,2);
+                break;
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }
