@@ -11,6 +11,7 @@
 |
 */
 
+Route::options('{all}',function (){return 'ok';})->middleware('cross');
 Route::get('/', function () {
     return view('welcome');
 });
