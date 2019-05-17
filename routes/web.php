@@ -17,4 +17,6 @@ Route::get('/', function () {
 Route::post('login','UserController@login');
 Route::group(['middleware'=>['auth']],function (){
     Route::post('picture','PictureController@addPicture');
+    Route::delete('picture','PictureController@delPicture');
+    Route::get('pictures','PictureController@getSystemPictures');
 });

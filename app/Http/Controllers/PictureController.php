@@ -40,6 +40,24 @@ class PictureController extends Controller
             'data'=>$data
         ]);
     }
+    public function getSystemPictures()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getPictures($page,$limit,1,0,2);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function delPicture()
+    {
+        $id = Input::get('id');
+        $this->handle->delPicture($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
     public function getPictures()
     {
         $page = Input::get('page',1);
