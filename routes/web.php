@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('login','UserController@login');
+Route::group(['middleware'=>['auth']],function (){
+    Route::post('picture','PictureController@addPicture');
+});

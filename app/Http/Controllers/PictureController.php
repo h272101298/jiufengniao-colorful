@@ -18,11 +18,12 @@ class PictureController extends Controller
     public function addPicture(PicturePost $post)
     {
         $user_id = getRedisData($post->token);
+        $type = $post->type?$post->type:2;
         if ($this->handle->addPicture(0,
             [
                 'user_id'=>$user_id,
                 'url'=>$post->url,
-                'type'=>2,
+                'type'=>$type,
             ]));
         return jsonResponse([
             'msg'=>'ok'
@@ -61,4 +62,5 @@ class PictureController extends Controller
             'data'=>$data
         ]);
     }
+//    public function addPicture(){}
 }
