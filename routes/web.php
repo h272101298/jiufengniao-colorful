@@ -23,4 +23,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('types','GoodController@getTypes');
     Route::post('type','GoodController@addType');
     Route::delete('type','GoodController@delType');
+    Route::get('goods','GoodController@getGoods');
+    Route::post('good','GoodController@addGood');
+    Route::delete('good','GoodController@delGood');
 });

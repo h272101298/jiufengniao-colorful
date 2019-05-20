@@ -89,4 +89,35 @@ class GoodHandle
         return Comment::where('good_id','=',$good_id)->orderBy('id','DESC')->get();
     }
 
+    public function addGood($id,$data)
+    {
+        $good = $id?Good::find($id):new Good();
+        foreach ($data as $key=>$value){
+            $good->$key = $value;
+        }
+        if ($good->save()){
+            return $good->id;
+        }
+        return false;
+    }
+    public function getGoods($page=1,$limit=10,$type=0)
+    {
+        $db = DB::table('goods');
+        if ($type){
+            $db->where('type_id','=',$type);
+        }
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'count'=>$count,
+            'data'=>$data
+        ];
+
+    }
+    public function delGood($id)
+    {
+        $good = Good::find($id);
+        return $good->delete();
+    }
+
 }

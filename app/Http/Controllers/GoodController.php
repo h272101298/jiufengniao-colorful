@@ -67,4 +67,42 @@ class GoodController extends Controller
         throw new \Exception('ERROR');
     }
 
+    public function addGood(Request $post)
+    {
+        $id = $post->id?$post->id:0;
+        $data = [
+          'type_id'=>$post->type_id,
+          'name'=>$post->name?$post->name:'',
+          'base_pic'=>$post->base_pic,
+          'mask_pic'=>$post->mask_pic,
+          'price'=>$post->price,
+          'group_price'=>$post->group_price
+        ];
+        if ($this->handle->addGood($id,$data)){
+            return jsonResponse([
+                'msg'=>'ok'
+            ]);
+        }
+        throw new \Exception('ERROR');
+    }
+    public function getGoods()
+    {
+        $type_id = Input::get('type_id',0);
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getGoods($page,$limit,$type_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function delGood()
+    {
+        $id = Input::get('id');
+        $this->handle->delGood($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+
 }
