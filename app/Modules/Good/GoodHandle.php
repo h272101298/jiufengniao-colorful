@@ -120,4 +120,9 @@ class GoodHandle
         return $good->delete();
     }
 
+    public function getGood($id)
+    {
+        return Good::find($id);
+    }
+
 }

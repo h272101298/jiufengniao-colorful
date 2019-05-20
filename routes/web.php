@@ -25,5 +25,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::delete('type','GoodController@delType');
     Route::get('goods','GoodController@getGoods');
     Route::post('good','GoodController@addGood');
+    Route::get('good','GoodController@getGood');
     Route::delete('good','GoodController@delGood');
 });

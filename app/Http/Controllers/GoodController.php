@@ -104,5 +104,14 @@ class GoodController extends Controller
             'msg'=>'ok'
         ]);
     }
+   public function getGood()
+   {
+       $id = Input::get('id');
+       $data = $this->handle->getGood($id);
+       return jsonResponse([
+           'msg'=>'ok',
+           'data'=>$data
+       ]);
+   }
 
 }
