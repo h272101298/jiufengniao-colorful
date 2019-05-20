@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Modules\Good\GoodHandle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class GoodController extends Controller
 {
@@ -28,6 +29,24 @@ class GoodController extends Controller
             ]);
         }
         throw new \Exception('ERROR');
+    }
+    public function getTypes()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getTypes($page,$limit);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function delType()
+    {
+        $id = Input::get('id');
+        $this->handle->delType($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
     }
     public function addBanner(Request $post)
     {

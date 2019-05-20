@@ -20,4 +20,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('picture','PictureController@addPicture');
     Route::delete('picture','PictureController@delPicture');
     Route::get('pictures','PictureController@getSystemPictures');
+    Route::get('types','GoodController@getTypes');
+    Route::post('type','GoodController@addType');
+    Route::delete('type','GoodController@delType');
 });

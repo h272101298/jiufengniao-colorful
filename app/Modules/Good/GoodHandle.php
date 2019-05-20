@@ -24,9 +24,14 @@ class GoodHandle
         }
         return false;
     }
-    public function getTypes()
+    public function getTypes($page=1,$limit=10)
     {
-        return Type::all();
+        $count = Type::count();
+        $data = Type::orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'count'=>$count,
+            'data'=>$data
+        ];
     }
     public function getTypeById($id)
     {
