@@ -125,4 +125,32 @@ class GoodHandle
         return Good::find($id);
     }
 
+    public function addDetailImage($detail_id,$url)
+    {
+        $image = new GoodDetailImage();
+        $image->detail_id = $detail_id;
+        $image->url = $url;
+        if ($image->save()){
+            return true;
+        }
+        return false;
+    }
+    public function getDetailImages($detail_id)
+    {
+        return GoodDetailImage::where('detail_id','=',$detail_id)->get();
+    }
+
+    public function addDetail($id,$data)
+    {
+        $detail = $id?GoodDetail::find($id):new GoodDetail();
+        foreach ($data as $key => $value){
+            $detail->$key = $value;
+        }
+        if($detail->save()){
+            return $detail->id;
+        }
+        return false;
+    }
+    public function getDetails(){}
+
 }

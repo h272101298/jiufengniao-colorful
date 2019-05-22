@@ -29,3 +29,4 @@ Route::get('pictures','PictureController@getPictures');//proxyApply
 Route::post('picture','PictureController@addPicture');//
 Route::get('types','GoodController@getTypes');
 Route::get('goods','GoodController@getGoods');
+Route::post('good/detail','GoodController@addGoodDetail');

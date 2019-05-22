@@ -114,4 +114,28 @@ class GoodController extends Controller
        ]);
    }
 
+   public function addGoodDetail(Request $post)
+   {
+       $good = $this->handle->getGood($post->good_id);
+       $data = [
+           'user_id'=>getRedisData($post->token),
+           'good_id'=>$post->good_id,
+           'type_id'=>$good->type_id,
+           'title'=>$post->title,
+           'detail'=>$post->detail,
+           'self_visible'=>$post->self_visible,
+           'base_pic'=>$post->base_pic
+       ];
+       $result = $this->handle->addDetail(0,$data);
+       $pics = $post->pics;
+       if (!empty($pics)){
+           foreach ($pics as $pic){
+               $this->handle->addDetailImage($result,$pic);
+           }
+       }
+       return jsonResponse([
+           'msg'=>'ok'
+       ]);
+   }
+
 }
