@@ -78,6 +78,14 @@ class GoodController extends Controller
             'data'=>$data
         ]);
     }
+    public function delBanner()
+    {
+        $id = Input::get('id');
+        $this->handle->delBanner($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 
     public function addGood(Request $post)
     {

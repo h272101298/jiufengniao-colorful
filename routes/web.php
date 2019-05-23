@@ -27,4 +27,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('good','GoodController@addGood');
     Route::get('good','GoodController@getGood');
     Route::delete('good','GoodController@delGood');
+    Route::get('banners','GoodController@getBanners');
+    Route::post('banner','GoodController@addBanner');
+    Route::delete('banner','GoodController@delBanner');
 });
