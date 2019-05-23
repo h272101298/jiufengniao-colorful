@@ -30,3 +30,5 @@ Route::post('picture','PictureController@addPicture');//
 Route::get('types','GoodController@getTypes');
 Route::get('goods','GoodController@getGoods');
 Route::post('good/detail','GoodController@addGoodDetail');
+Route::get('banners','GoodController@getBanners');
+Route::get('good/details','GoodController@getGoodDetails');

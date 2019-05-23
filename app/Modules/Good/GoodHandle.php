@@ -9,6 +9,7 @@
 namespace App\Modules\Good;
 
 
+use App\Modules\User\WeChatUser;
 use Illuminate\Support\Facades\DB;
 
 class GoodHandle
@@ -151,6 +152,25 @@ class GoodHandle
         }
         return false;
     }
-    public function getDetails(){}
+    public function getDetails($page=1,$limit =10 ,$type_id = 0,$format=0)
+    {
+        $db = DB::table('good_details');
+        if ($type_id){
+            $db->where('type_id','=',$type_id);
+        }
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        if ($format&&count($data)!=0){
+            foreach ($data as $datum){
+                $datum->user = WeChatUser::find($datum->user_id);
+                $datum->image = GoodDetailImage::where('detail_id','=',$datum->id)->pluck('url')->first();
+                $datum->collect = GoodCollect::where('detail_id','=',$datum->id)->count();
+            }
+        }
+        return [
+            'count'=>$count,
+            'data'=>$data
+        ];
+    }
 
 }

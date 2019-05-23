@@ -67,6 +67,18 @@ class GoodController extends Controller
         throw new \Exception('ERROR');
     }
 
+    public function getBanners()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $type = Input::get('type',1);
+        $data = $this->handle->getBanners($page,$limit,$type);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+
     public function addGood(Request $post)
     {
         $id = $post->id?$post->id:0;
@@ -137,5 +149,15 @@ class GoodController extends Controller
            'msg'=>'ok'
        ]);
    }
-
+   public function getGoodDetails()
+   {
+       $page = Input::get('page',1);
+       $limit = Input::get('limit',10);
+       $type_id = Input::get('type_id',0);
+       $data = $this->handle->getDetails($page,$limit,$type_id,1);
+       return jsonResponse([
+           'msg'=>'ok',
+           'data'=>$data
+       ]);
+   }
 }
