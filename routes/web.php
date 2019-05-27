@@ -30,4 +30,8 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('banners','GoodController@getBanners');
     Route::post('banner','GoodController@addBanner');
     Route::delete('banner','GoodController@delBanner');
+    Route::post('score/product','ScoreController@addScoreProduct');
+    Route::get('score/product','ScoreController@getScoreProduct');
+    Route::get('score/products','ScoreController@getScoreProducts');
+    Route::delete('score/product','ScoreController@delScoreProduct');
 });
