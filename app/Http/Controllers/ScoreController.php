@@ -28,6 +28,7 @@ class ScoreController extends Controller
         if ($result){
             $pictures = $post->pictures;
             if (count($pictures)!=0){
+                $this->handle->delScoreProductImages($result);
                 foreach ($pictures as $picture){
                     $this->handle->addScoreProductImage($result,$picture);
                 }
