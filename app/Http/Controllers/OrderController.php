@@ -83,6 +83,9 @@ class OrderController extends Controller
 //        $repay = $post->repay?$post->repay:0;
         $user = WeChatUser::findOrFail($user_id);
         $order = $this->handle->getOrder($order_id);
+        if ($order->user_id!=$user_id){
+            return jsonResponse(['msg'=>'无权操作！'],422);
+        }
         $wxPay = getWxPay($user->open_id);
         $data = $wxPay->pay($order->orderSn, '购买商品', $order->price, $url);
         $notify_id = $wxPay->getPrepayId();
