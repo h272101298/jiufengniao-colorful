@@ -21,7 +21,7 @@ class ScoreController extends Controller
             'score'=>$post->score,
             'title'=>$post->title,
             'detail'=>$post->detail,
-            'share_title'=>$post->share_titile,
+            'share_title'=>$post->share_title,
             'cover'=>$post->cover
         ];
         $result = $this->handle->addScoreProduct($id,$data);
