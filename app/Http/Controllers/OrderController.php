@@ -80,9 +80,13 @@ class OrderController extends Controller
         $url = $post->getScheme() . '://' . $post->getHttpHost() . '/api/pay/notify';
         $user_id = getRedisData($post->token);
         $order_id = $post->order_id;
-//        $repay = $post->repay?$post->repay:0;
+        $repay = $post->repay?$post->repay:0;
         $user = WeChatUser::findOrFail($user_id);
-        $order = $this->handle->getOrder($order_id);
+        if ($repay){
+            $order = $this->handle->getOrder($order_id);
+        }else{
+            $order = $this->handle->getOrderBySn($order_id);
+        }
         if ($order->user_id!=$user_id){
             return jsonResponse(['msg'=>'无权操作！'],422);
         }
