@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->tinyInteger('state')->default(1);//状态，1生成，2支付，3发货，4收货
             $table->unsignedBigInteger('product_id');
             $table->string('picture')->nullable();
+            $table->string('notify_id')->nullable();
             $table->integer('number');
             $table->timestamps();
         });

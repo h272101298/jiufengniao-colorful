@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\WxPay;
 use App\Modules\Good\GoodHandle;
 use App\Modules\Order\OrderHandle;
 use App\Modules\Score\ScoreHandle;
 use App\Modules\User\UserHandle;
+use App\Modules\User\WeChatUser;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -78,87 +80,47 @@ class OrderController extends Controller
         $url = $post->getScheme() . '://' . $post->getHttpHost() . '/api/pay/notify';
         $user_id = getRedisData($post->token);
         $order_id = $post->order_id;
-        $repay = $post->repay?$post->repay:0;
+//        $repay = $post->repay?$post->repay:0;
         $user = WeChatUser::findOrFail($user_id);
-        $amountPay = $post->amountPay?$post->amountPay:0;
-        $goodsCheck=$this->handle->goodsNumCheck($order_id);
-        if(!$goodsCheck){
-            return response()->json([
-                'msg'=>'库存不足!'
-            ],400);
-        }
-        if ($repay){
-            $order = Order::where('number', '=', $order_id)->first();
-            if ($order->state!='created'){
-                return jsonResponse([
-                    'msg' => '订单已支付！'
-                ], 400);
-            }
-            if ($amountPay){
-                $amount = $this->handle->getUserAmount($user_id);
-                if ($amount<$order->price){
-                    throw new \Exception('余额不足！');
-                }
-                $this->handle->setUserAmount($user_id,$amount-$order->price);
-                $data = [
-                    'state' => 'paid'
-                ];
-                $this->handle->addOrder($order->id,$data);
-                return response()->json([
-                    'msg' => 'ok'
-                ]);
-            }
-            //$price = Order::where('group_number', '=', $order_id)->sum('price');
-            $wxPay = getWxPay($user->open_id);
-            $data = $wxPay->pay($order_id, '购买商品', ($order->price) * 100, $url);
-            $notify_id = $wxPay->getPrepayId();
-            Order::where('number', '=', $order_id)->update(['notify_id' => $notify_id]);
-            return response()->json([
-                'msg' => 'ok',
-                'data' => $data
-            ]);
-        }
-        $count = Order::where('group_number', '=', $order_id)->where('state', '!=', 'created')->count();
-        if ($count != 0) {
-            return jsonResponse([
-                'msg' => '订单已支付！'
-            ], 400);
-        }
-        $order_user = Order::where('group_number', '=', $order_id)->pluck('user_id')->first();
-        if ($order_user != $user_id) {
-            return jsonResponse([
-                'msg' => '无权操作！'
-            ], 403);
-        }
-        $price = Order::where('group_number', '=', $order_id)->sum('price');
-        $product_id=$this->handle->orderId_exchange_productId($order_id);
-        $res=$this->handle->goodsNumDec($product_id);
-        if(!$res){
-            return response()->json([
-                'msg'=>'库存不足!'
-            ],400);
-        }
-        if ($amountPay){
-            $amount = $this->handle->getUserAmount($user_id);
-            if ($amount<$price){
-                throw new \Exception('余额不足！');
-            }
-            $this->handle->setUserAmount($user_id,$amount-$price);
-            $data = [
-                'state' => 'paid'
-            ];
-            Order::where('group_number', '=', $order_id)->update(['state'=>'paid']);
-            return response()->json([
-                'msg' => 'ok'
-            ]);
-        }
+        $order = $this->handle->getOrder($order_id);
         $wxPay = getWxPay($user->open_id);
-        $data = $wxPay->pay($order_id, '购买商品', ($price) * 100, $url);
+        $data = $wxPay->pay($order->orderSn, '购买商品', $order->price, $url);
         $notify_id = $wxPay->getPrepayId();
-        Order::where('group_number', '=', $order_id)->update(['notify_id' => $notify_id]);
+        $this->handle->addOrder($order->id,['notify_id' => $notify_id]);
         return response()->json([
             'msg' => 'ok',
             'data' => $data
         ]);
+    }
+    public function notifyOrder(Request $post)
+    {
+        $data = $post->getContent();
+        $wx = WxPay::xmlToArray($data);
+        $wspay = getWxPay($wx['openid']);
+        $data = [
+            'appid' => $wx['appid'],
+            'cash_fee' => $wx['cash_fee'],
+            'bank_type' => $wx['bank_type'],
+            'fee_type' => $wx['fee_type'],
+            'is_subscribe' => $wx['is_subscribe'],
+            'mch_id' => $wx['mch_id'],
+            'nonce_str' => $wx['nonce_str'],
+            'openid' => $wx['openid'],
+            'out_trade_no' => $wx['out_trade_no'],
+            'result_code' => $wx['result_code'],
+            'return_code' => $wx['return_code'],
+            'time_end' => $wx['time_end'],
+            'total_fee' => $wx['total_fee'],
+            'trade_type' => $wx['trade_type'],
+            'transaction_id' => $wx['transaction_id']
+        ];
+        $sign = $wspay->getSign($data);
+        if ($sign == $wx['sign']) {
+            $order = $this->handle->getOrderBySn($wx['out_trade_no']);
+            $order->state = 2;
+            $order->save();
+            return 'SUCCESS';
+        }
+        return 'ERROR';
     }
 }

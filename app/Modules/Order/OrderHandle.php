@@ -40,6 +40,14 @@ class OrderHandle
             'data'=>$data
         ];
     }
+    public function getOrder($id)
+    {
+        return Order::find($id);
+    }
+    public function getOrderBySn($sn)
+    {
+        return Order::where('orderSn','=',$sn)->first();
+    }
     public function addOrderAddress($id,$data)
     {
         $address = $id?OrderAddress::find($id):new OrderAddress();

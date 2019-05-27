@@ -16,6 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::post('login','UserController@login');
+Route::post('upload','SystemController@upload');
 Route::group(['middleware'=>['auth']],function (){
     Route::post('picture','PictureController@addPicture');
     Route::delete('picture','PictureController@delPicture');
@@ -34,4 +35,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('score/product','ScoreController@getScoreProduct');
     Route::get('score/products','ScoreController@getScoreProducts');
     Route::delete('score/product','ScoreController@delScoreProduct');
+    Route::post('tx/config','SystemController@addTxConfig');
+    Route::get('tx/config','SystemController@getTxConfig');
 });

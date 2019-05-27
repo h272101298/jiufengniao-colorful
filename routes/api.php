@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::post('login','WeChatController@createUser');//Login
+Route::post('pay/notify','OrderController@notifyOrder');
 Route::post('proxy/apply','ProxyController@addProxyApply');//proxyApply
 Route::post('address','WeChatController@addUserAddress');//proxyApply
 Route::delete('address','WeChatController@delUserAddress');//proxyApply
@@ -33,3 +34,4 @@ Route::post('good/detail','GoodController@addGoodDetail');
 Route::get('banners','GoodController@getBanners');
 Route::get('good/details','GoodController@getGoodDetails');
 Route::post('order','OrderController@makeOrder');
+Route::post('pay/order','OrderController@makeOrder');

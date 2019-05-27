@@ -78,3 +78,11 @@ if (!function_exists('getRedisData')){
         return $data;
     }
 }
+
+if (!function_exists('getWxPay')) {
+    function getWxPay($open_id=''){
+        $config = \App\Modules\System\TxConfig::first();
+        $wxpay = new \App\Libraries\WxPay($config->app_id,$config->mch_id,$config->api_key,$open_id);
+        return $wxpay;
+    }
+}
