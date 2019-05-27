@@ -35,3 +35,5 @@ Route::get('banners','GoodController@getBanners');
 Route::get('good/details','GoodController@getGoodDetails');
 Route::post('order','OrderController@makeOrder');
 Route::post('pay/order','OrderController@payOrder');
+Route::get('score/product','ScoreController@getScoreProduct');
+Route::get('score/products','ScoreController@getScoreProducts');
