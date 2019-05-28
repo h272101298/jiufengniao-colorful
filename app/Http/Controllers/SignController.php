@@ -14,17 +14,26 @@ class SignController extends Controller
     }
     public function addSignConfig(Request $post)
     {
-        $id = $post->id?$post->id:0;
-        $data = [
-            'days'=>$post->days,
-            'type'=>$post->type?$post->type:1,
-            'reward'=>$post->reward
-        ];
-        if ($this->handle->setSignConfig($id,$data)){
-            return jsonResponse([
-                'msg'=>'ok'
-            ]);
+        $configs = $post->configs;
+        if (!empty($configs)){
+            foreach ($configs as $config){
+                $info = $this->handle->getSignConfig($config['days']);
+                if ($info){
+                    $id = $info->id;
+                }else{
+                    $id = 0;
+                }
+                $data = [
+                    'days'=>$config['days'],
+                    'type'=>$config['type'],
+                    'reward'=>$config['reward']
+                ];
+                $this->handle->setSignConfig($id,$data);
+            }
         }
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
         throw new \Exception('error');
     }
     public function getSignConfigs()

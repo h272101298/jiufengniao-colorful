@@ -27,6 +27,10 @@ class SignHandle
         $configs = SignConfig::all();
         return $configs;
     }
+    public function getSignConfig($day)
+    {
+        return SignConfig::where('days','=',$day)->first();
+    }
     public function addSignRecord($user_id)
     {
         $record = new SignRecord();
