@@ -140,5 +140,72 @@ class UserHandle
         }
         return $address;
     }
+    public function addUserScore($user_id,$score)
+    {
+        $userScore = UserScore::where('user_id','=',$user_id)->first();
+        if (empty($userScore)){
+            $userScore = new UserScore();
+            $userScore->score = 0 ;
+            $userScore->user_id = $user_id;
+        }
+        $userScore->score += $score;
+        if ($userScore->save()){
+            return true;
+        }
+        return false;
+    }
+    public function getUserScore($user_id)
+    {
+        $score = UserScore::where('user_id','=',$user_id)->pluck('score')->first();
+        if (empty($score)){
+            return 0;
+        }
+        return $score;
+    }
+    public function setUserScore($user_id,$score)
+    {
+        $userScore = UserScore::where('user_id','=',$user_id)->first();
+        if (empty($userScore)){
+            $userScore = new UserScore();
+            $userScore->score = 0 ;
+            $userScore->user_id = $user_id;
+        }
+        $userScore->score = $score;
+        if ($userScore->save()){
+            return true;
+        }
+        return false;
+    }
+    public function addScoreRecord($id=0,$data)
+    {
+        if ($id){
+            $record = ScoreRecord::find($id);
+        }else{
+            $record = new ScoreRecord();
+        }
+        foreach ($data as $key => $value){
+            $record->$key = $value;
+        }
+        if ($record->save()){
+            return true;
+        }
+        return false;
+    }
+    public function getScoreRecords($user_id=0,$type=0,$page=1,$limit=10)
+    {
+        $db = DB::table('score_records');
+        if ($user_id){
+            $db->where('user_id','=',$user_id);
+        }
+        if ($type){
+            $db->where('type','=',$type);
+        }
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'count'=>$count,
+            'data'=>$data
+        ];
+    }
 
 }
