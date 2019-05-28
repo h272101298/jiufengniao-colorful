@@ -37,4 +37,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::delete('score/product','ScoreController@delScoreProduct');
     Route::post('tx/config','SystemController@addTxConfig');
     Route::get('tx/config','SystemController@getTxConfig');
+    Route::post('sign/config','SystemController@addSignConfig');
+    Route::get('sign/configs','SystemController@getSignConfigs');
 });

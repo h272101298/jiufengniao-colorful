@@ -141,12 +141,4 @@ class UserHandle
         return $address;
     }
 
-    public function addSign()
-    {
-
-    }
-    public function getTodaySign($user_id)
-    {
-        return SignRecord::where('user_id','=',$user_id)->whereDate()->count();
-    }
 }
