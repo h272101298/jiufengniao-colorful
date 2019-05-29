@@ -38,3 +38,5 @@ Route::post('pay/order','OrderController@payOrder');
 Route::get('score/product','ScoreController@getScoreProduct');
 Route::get('score/products','ScoreController@getScoreProducts');
 Route::post('sign','SignController@sign');
+Route::get('sign','SignController@getSignRecords');
+Route::get('sign/configs','SignController@getSignConfigs');

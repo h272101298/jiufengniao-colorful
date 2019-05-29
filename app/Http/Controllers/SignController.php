@@ -104,5 +104,29 @@ class SignController extends Controller
             'continue'=>$continue
         ]);
     }
+    public function getSignRecords()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $count = $this->handle->checkSign($user_id,0);
+        $check = $this->handle->checkSign($user_id,1);
+        $continue = $this->handle->getContinueSign($user_id);
+        if ($continue){
+            if ($continue['date']==date('Y-m-d',time())||$continue['date']==date('Y-m-d',strtotime('-1 days'))){
+                $days = $continue['count'];
+            }else{
+                $days = 0;
+            }
+        }else{
+            $days = 0;
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>[
+                'count'=>$count,
+                'continue'=>$days,
+                'check'=>$check
+            ]
+        ]);
+    }
 
 }
