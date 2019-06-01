@@ -24,4 +24,12 @@ class MemberHandle
         }
         return false;
     }
+    public function getMemberConfigs()
+    {
+        return MemberConfig::all();
+    }
+    public function getMemberConfig($level)
+    {
+        return MemberConfig::where('level','=',$level)->first();
+    }
 }

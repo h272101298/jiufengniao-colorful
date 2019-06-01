@@ -153,4 +153,14 @@ class WeChatController extends Controller
             'data'=>$data
         ]);
     }
+    public function getAttentionCount()
+    {
+        $user_id = getUserToken(Input::get('token'));
+        $data = $this->handle->getUserAttentionCount($user_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+//    public function
 }

@@ -39,4 +39,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('tx/config','SystemController@getTxConfig');
     Route::post('sign/config','SignController@addSignConfig');
     Route::get('sign/configs','SignController@getSignConfigs');
+    Route::post('launcher/image','LauncherController@addLauncherImage');
+    Route::get('launcher/images','LauncherController@getLauncherImages');
+    Route::delete('launcher/image','LauncherController@delLauncherImage');
 });

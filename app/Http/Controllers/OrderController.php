@@ -9,6 +9,7 @@ use App\Modules\Score\ScoreHandle;
 use App\Modules\User\UserHandle;
 use App\Modules\User\WeChatUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class OrderController extends Controller
 {
@@ -129,5 +130,14 @@ class OrderController extends Controller
             return 'SUCCESS';
         }
         return 'ERROR';
+    }
+    public function getUserOrderCount()
+    {
+        $user_id = getUserToken(Input::get('token'));
+        $data = $this->handle->getUserOrderCount($user_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
     }
 }

@@ -207,5 +207,15 @@ class UserHandle
             'data'=>$data
         ];
     }
+    public function getUserAttentionCount($user_id)
+    {
+        $db = DB::table('attentions');
+        $attentionSum = $db->where('user_id','=',$user_id)->count();
+        $fanSum = $db->where('attention_id','=',$user_id)->count();
+        return [
+            'attentionSum'=>$attentionSum,
+            'fanSum'=>$fanSum
+        ];
+    }
 
 }
