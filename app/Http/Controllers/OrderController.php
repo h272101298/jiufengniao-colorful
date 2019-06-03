@@ -92,7 +92,7 @@ class OrderController extends Controller
             return jsonResponse(['msg'=>'无权操作！'],422);
         }
         $wxPay = getWxPay($user->open_id);
-        $data = $wxPay->pay($order->orderSn, '购买商品', $order->price, $url);
+        $data = $wxPay->pay($order->orderSn, '购买商品', $order->price, $url,$post->getClientIp());
         $notify_id = $wxPay->getPrepayId();
         $this->handle->addOrder($order->id,['notify_id' => $notify_id]);
         return response()->json([
