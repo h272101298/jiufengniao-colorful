@@ -40,3 +40,5 @@ Route::get('score/products','ScoreController@getScoreProducts');
 Route::post('sign','SignController@sign');
 Route::get('sign','SignController@getSignRecords');
 Route::get('sign/configs','SignController@getSignConfigs');
+
+Route::get('launchers','LauncherController@getLauncherImages');
