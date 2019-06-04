@@ -140,6 +140,10 @@ class UserHandle
         }
         return $address;
     }
+    public function getDefaultAddress($user_id)
+    {
+        return UserAddress::where('user_id','=',$user_id)->where('default','=',1)->first();
+    }
     public function addUserScore($user_id,$score)
     {
         $userScore = UserScore::where('user_id','=',$user_id)->first();

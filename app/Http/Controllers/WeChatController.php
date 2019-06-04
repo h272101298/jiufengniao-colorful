@@ -145,9 +145,18 @@ class WeChatController extends Controller
     }
     public function getUserAddress()
     {
-        $user_id = getRedisData(Input::get('token'));
+//        $user_id = getRedisData(Input::get('token'));
         $id = Input::get('id');
         $data = $this->handle->getUserAddress($id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getDefaultAddress()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $data = $this->handle->getDefaultAddress($user_id);
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$data
