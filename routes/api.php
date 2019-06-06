@@ -19,9 +19,9 @@ Route::post('proxy/apply','ProxyController@addProxyApply');//proxyApply
 Route::post('address','WeChatController@addUserAddress');//proxyApply
 Route::delete('address','WeChatController@delUserAddress');//proxyApply
 Route::post('default/address','WeChatController@setDefaultAddress');//proxyApply
+Route::get('default/address','WeChatController@getDefaultAddress');//proxyApply
 Route::get('addresses','WeChatController@getUserAddresses');//proxyApply
 Route::get('address','WeChatController@getUserAddress');//proxyApply
-Route::get('default/address','WeChatController@getDefaultAddress');//proxyApply
 Route::post('user/info','WeChatController@addUserInfo');//proxyApply
 Route::get('user/info','WeChatController@getUserInfo');//proxyApply
 Route::get('user/amount','ProxyController@getUserProxyAmount');//proxyApply
@@ -43,3 +43,4 @@ Route::get('sign','SignController@getSignRecords');
 Route::get('sign/configs','SignController@getSignConfigs');
 Route::get('launchers','LauncherController@getLauncherImages');
 Route::get('attention/count','WeChatController@getAttentionCount');
+Route::get('order/count','OrderController@getUserOrderCount');
