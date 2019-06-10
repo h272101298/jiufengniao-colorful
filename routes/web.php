@@ -44,4 +44,8 @@ Route::group(['middleware'=>['auth']],function (){
     Route::delete('launcher','LauncherController@delLauncherImage');
     Route::get('recommend','GoodController@getRecommend');
     Route::post('recommend','GoodController@setRecommend');
+    Route::get('documents','DocumentController@getDocuments');
+    Route::get('document','GoodController@getDocument');
+    Route::post('document','DocumentController@addDocument');
+    Route::delete('document','GoodController@delDocument');
 });

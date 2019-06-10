@@ -45,3 +45,5 @@ Route::get('launchers','LauncherController@getLauncherImages');
 Route::get('attention/count','WeChatController@getAttentionCount');
 Route::get('order/count','OrderController@getUserOrderCount');
 Route::get('recommend','GoodController@getRecommend');
+Route::get('documents','DocumentController@getDocuments');
+Route::get('document','GoodController@getDocument');
