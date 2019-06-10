@@ -42,4 +42,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('launcher','LauncherController@addLauncherImage');
     Route::get('launchers','LauncherController@getLauncherImages');
     Route::delete('launcher','LauncherController@delLauncherImage');
+    Route::get('recommend','GoodController@getRecommend');
+    Route::post('recommend','GoodController@setRecommend');
 });

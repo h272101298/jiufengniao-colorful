@@ -115,6 +115,17 @@ class GoodHandle
         ];
 
     }
+    public function setRecommend($id)
+    {
+        Good::where('recommend','=',1)->update(['recommend'=>0]);
+        $good = Good::find($id);
+        $good->recommend = 1;
+        $good->save();
+    }
+    public function getRecommend()
+    {
+        return Good::where('recommend','=',1)->first();
+    }
     public function delGood($id)
     {
         $good = Good::find($id);

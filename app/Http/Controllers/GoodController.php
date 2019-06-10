@@ -89,16 +89,21 @@ class GoodController extends Controller
 
     public function addGood(Request $post)
     {
+        $recommend = $post->recommend;
         $id = $post->id?$post->id:0;
         $data = [
-          'type_id'=>$post->type_id,
+            'type_id'=>$post->type_id,
           'name'=>$post->name?$post->name:'',
           'base_pic'=>$post->base_pic,
           'mask_pic'=>$post->mask_pic,
           'price'=>$post->price,
           'group_price'=>$post->group_price
         ];
-        if ($this->handle->addGood($id,$data)){
+        $result = $this->handle->addGood($id,$data);
+        if ($result){
+            if ($recommend){
+                $this->handle->setRecommend($result);
+            }
             return jsonResponse([
                 'msg'=>'ok'
             ]);
@@ -111,6 +116,23 @@ class GoodController extends Controller
         $page = Input::get('page',1);
         $limit = Input::get('limit',10);
         $data = $this->handle->getGoods($page,$limit,$type_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getRecommend()
+    {
+        $data = $this->handle->getRecommend();
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function setRecommend()
+    {
+        $id = Input::get('id');
+        $data = $this->handle->setRecommend($id);
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$data

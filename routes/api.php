@@ -44,3 +44,4 @@ Route::get('sign/configs','SignController@getSignConfigs');
 Route::get('launchers','LauncherController@getLauncherImages');
 Route::get('attention/count','WeChatController@getAttentionCount');
 Route::get('order/count','OrderController@getUserOrderCount');
+Route::get('recommend','GoodController@getRecommend');
