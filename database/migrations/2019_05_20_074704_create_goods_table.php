@@ -21,6 +21,7 @@ class CreateGoodsTable extends Migration
             $table->string('mask_pic');
             $table->float('price');
             $table->float('group_price');
+            $table->tinyInteger('recommend')->default(0);
             $table->timestamps();
         });
     }
