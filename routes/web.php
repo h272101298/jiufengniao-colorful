@@ -54,4 +54,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('proxy/list','ProxyController@getProxyList');
     Route::get('proxy/amount/config','ProxyController@getProxyAmountConfig');
     Route::post('proxy/amount/config','ProxyController@setProxyAmountConfig');
+    Route::get('proxy/amounts','ProxyController@getProxyAmounts');
+    Route::get('withdraws','ProxyController@getWithdraws');
 });

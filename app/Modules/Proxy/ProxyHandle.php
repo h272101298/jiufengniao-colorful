@@ -90,6 +90,21 @@ class ProxyHandle
     {
         return ProxyAmount::where('user_id','=',$user_id)->first();
     }
+    public function getProxyAmounts($page=1,$limit=10,$format=0)
+    {
+        $db = DB::table('proxy_amounts');
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        if ($format==1&&count($data)!=0){
+            foreach ($data as $datum){
+                $datum->user = WeChatUser::find($datum->user_id);
+            }
+        }
+        return [
+            'data'=>$data,
+            'count'=>$count
+        ];
+    }
 
     public function getProxyAmountListCount($user_id)
     {
@@ -139,5 +154,35 @@ class ProxyHandle
             return true;
         }
         return false;
+    }
+    public function addWithdraw($id,$data)
+    {
+        $withdraw = $id?Withdraw::find($id):new Withdraw();
+        foreach ($data as $key=>$value){
+            $withdraw->$key = $value;
+        }
+        if ($withdraw->save()){
+            return $withdraw->id;
+        }
+        return false;
+    }
+    public function delWithdraw($id)
+    {
+        return Withdraw::find($id)->delete();
+    }
+    public function getWithdraws($page=1,$limit=10,$format=0)
+    {
+        $db = DB::table('withdraws');
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        if ($format==1&&count($data)!=0){
+            foreach ($data as $datum){
+                $datum->user = WeChatUser::find($datum->user_id);
+            }
+        }
+        return [
+            'data'=>$data,
+            'count'=>$count
+        ];
     }
 }

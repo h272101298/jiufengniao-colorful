@@ -121,5 +121,25 @@ class ProxyController extends Controller
         }
         throw new Exception('error');
     }
+    public function getProxyAmounts()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getProxyAmounts($page,$limit,1);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getWithdraws()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getWithdraws($page,$limit,1);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 
 }
