@@ -44,7 +44,7 @@ class UserHandle
         $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
         if ($format==1&&count($data)!=0){
             foreach ($data as $datum){
-                $datum->userInfo = $this->getUserInfoByUserId($datum->user_id);
+                $datum->userInfo = $this->getUserInfoByUserId($datum->id);
             }
         }
         return [
