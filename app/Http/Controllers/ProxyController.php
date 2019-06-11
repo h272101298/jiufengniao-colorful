@@ -141,5 +141,34 @@ class ProxyController extends Controller
             'data'=>$data
         ]);
     }
+    public function addWithdraw(Request $post)
+    {
+        $user_id = getRedisData($post->token);
+        $amount = $post->amount;
+        $data = [
+            'user_id'=>$user_id,
+            'amount'=>$amount
+        ];
+        if ($this->handle->addWithdraw(0,$data)){
+            return jsonResponse([
+                'msg'=>'ok'
+            ]);
+        }
+        throw new \Exception('ERROR');
+    }
+    public function getProxyInfo(Request $post)
+    {
+        $user_id = getRedisData($post->token);
+        $is_proxy = $this->handle->isProxy($user_id);
+        $apply = $this->handle->getUserProxyApply($user_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>[
+                'is_proxy'=>$is_proxy,
+                'apply'=>empty($apply)?0:1,
+                'proxy_apply'=>empty($apply)?0:$apply->state
+            ]
+        ]);
+    }
 
 }
