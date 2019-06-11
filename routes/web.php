@@ -59,5 +59,5 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('notify/config','SystemController@setNotifyConfig');
     Route::get('notify/configs','SystemController@getNotifyConfigs');
     Route::get('notify/config','SystemController@getNotifyConfig');
-    Route::delete('notify/config','SystemController@delNotifyConfig');
+    Route::get('del/notify/config','SystemController@delNotifyConfig');
 });
