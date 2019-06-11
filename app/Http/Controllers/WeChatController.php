@@ -175,8 +175,8 @@ class WeChatController extends Controller
     {
         $page = Input::get('page',1);
         $limit = Input::get('limit',10);
-        $open_id = Input::get('open_id');
-        $nickname = Input::get('nickname');
+        $open_id = Input::get('open_id','');
+        $nickname = Input::get('nickname','');
         $data = $this->handle->getWeChatUsers($page,$limit,$open_id,$nickname);
         return jsonResponse([
             'msg'=>'ok',

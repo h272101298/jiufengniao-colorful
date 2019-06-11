@@ -73,5 +73,9 @@ class ProxyController extends Controller
             'data'=>$data
         ]);
     }
+    public function passProxyApply()
+    {
+
+    }
 
 }
