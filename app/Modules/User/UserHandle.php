@@ -31,7 +31,7 @@ class UserHandle
         return WeChatUser::find($id);
     }
     //获取微信用户
-    public function getWeChatUsers(int $page,int $limit,string $open_id = '',string $nickname = '')
+    public function getWeChatUsers(int $page,int $limit,string $open_id = '',string $nickname = '',int $format=0)
     {
         $db = DB::table('we_chat_users');
         if (strlen($open_id)!=0) {
@@ -42,6 +42,11 @@ class UserHandle
         }
         $count = $db->count();
         $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        if ($format==1&&count($data)!=0){
+            foreach ($data as $datum){
+                $datum->userInfo = $this->getUserInfoByUserId($datum->user_id);
+            }
+        }
         return [
             'count'=>$count,
             'data'=>$data

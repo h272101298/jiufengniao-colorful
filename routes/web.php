@@ -52,4 +52,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('proxy/applies','ProxyController@getProxyApplies');
     Route::post('proxy/apply','ProxyController@passProxyApply');
     Route::get('proxy/list','ProxyController@getProxyList');
+    Route::get('proxy/amount/config','ProxyController@getProxyAmountConfig');
+    Route::post('proxy/amount/config','ProxyController@setProxyAmountConfig');
 });

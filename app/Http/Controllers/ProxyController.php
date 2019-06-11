@@ -7,6 +7,7 @@ use App\Modules\Proxy\ProxyHandle;
 use App\Modules\User\UserHandle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use mysql_xdevapi\Exception;
 
 class ProxyController extends Controller
 {
@@ -96,6 +97,29 @@ class ProxyController extends Controller
             'msg'=>'ok',
             'data'=>$data
         ]);
+    }
+    public function getProxyAmountConfig()
+    {
+        $data = $this->handle->getProxyAmountConfig();
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function setProxyAmountConfig(Request $post)
+    {
+        $data = [
+          'system'=>$post->system?$post->system:0,
+          'level1'=>$post->level1?$post->level1:0,
+          'level2'=>$post->level2?$post->level2:0,
+          'level3'=>$post->level3?$post->level3:0,
+        ];
+        if ($this->handle->setProxyAmountConfig($data)){
+            return jsonResponse([
+                'msg'=>'ok'
+            ]);
+        }
+        throw new Exception('error');
     }
 
 }

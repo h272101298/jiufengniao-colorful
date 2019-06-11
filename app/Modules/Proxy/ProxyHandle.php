@@ -122,4 +122,22 @@ class ProxyHandle
             'count'=>$count
         ];
     }
+    public function getProxyAmountConfig()
+    {
+        return ProxyAmountConfig::first();
+    }
+    public function setProxyAmountConfig($data)
+    {
+        $config = ProxyAmountConfig::first();
+        if (empty($config)){
+            $config = new ProxyAmountConfig();
+        }
+        foreach ($data as $key=>$value){
+            $config->$key = $value;
+        }
+        if ($config->save()){
+            return true;
+        }
+        return false;
+    }
 }
