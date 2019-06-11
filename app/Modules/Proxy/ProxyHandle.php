@@ -34,7 +34,7 @@ class ProxyHandle
      * @return mixed
      * 获取用户的分销申请
      */
-    public function getUserProxyApply($user_id,$pass=1)
+    public function getUserProxyApply($user_id,$pass=0)
     {
         if ($pass){
             return ProxyApply::where('user_id','=',$user_id)->where('state','=',2)->first();
