@@ -156,6 +156,7 @@ class ProxyController extends Controller
             ],433);
         }
         if ($this->handle->addWithdraw(0,$data)){
+            $this->handle->setUserProxyAmount($user_id,0-$amount);
             return jsonResponse([
                 'msg'=>'ok'
             ]);
@@ -192,7 +193,7 @@ class ProxyController extends Controller
         $state = Input::get('state',3);
         $withdraw = $this->handle->getWithdraw($id);
         if ($state==3){
-            $this->handle->setUserProxyAmount($withdraw->user_id,0-$withdraw->amount);
+            $this->handle->setUserProxyAmount($withdraw->user_id,$withdraw->amount);
         }
         $this->handle->addWithdraw($id,['state'=>$state]);
         return jsonResponse(['msg'=>'ok']);

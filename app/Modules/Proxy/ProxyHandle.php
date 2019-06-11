@@ -93,7 +93,7 @@ class ProxyHandle
     {
         return ProxyAmount::where('user_id','=',$user_id)->first();
     }
-    public function setUserProxyAmount($user_id,$amount)
+    public function setUserProxyAmount($user_id,$amount,$all=0)
     {
         $proxyAmount = ProxyAmount::where('user_id','=',$user_id)->first();
         if (empty($proxyAmount)){
@@ -103,7 +103,9 @@ class ProxyHandle
             $proxyAmount->amount = 0;
         }
         $proxyAmount->real_amount+=$amount;
-        $proxyAmount->amount+=$amount;
+        if ($all){
+            $proxyAmount->amount+=$amount;
+        }
         if ($proxyAmount->save()){
             return true;
         }
