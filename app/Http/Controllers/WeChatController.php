@@ -171,5 +171,16 @@ class WeChatController extends Controller
             'data'=>$data
         ]);
     }
-//    public function
+    public function getWeChatUsers()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $open_id = Input::get('open_id');
+        $nickname = Input::get('nickname');
+        $data = $this->handle->getWeChatUsers($page,$limit,$open_id,$nickname);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }

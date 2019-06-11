@@ -62,5 +62,16 @@ class ProxyController extends Controller
         }
         return $data;
     }
+    public function getProxyApplies()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $state = Input::get('state',0);
+        $data = $this->handle->getProxyApplies($page,$limit,0,$state);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 
 }

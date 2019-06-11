@@ -48,4 +48,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('document','GoodController@getDocument');
     Route::post('document','DocumentController@addDocument');
     Route::delete('document','GoodController@delDocument');
+    Route::get('wechat/users','WeChatController@getWeChatUsers');
+    Route::get('proxy/applies','ProxyController@getProxyApplies');
 });
