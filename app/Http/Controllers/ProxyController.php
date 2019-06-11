@@ -56,7 +56,7 @@ class ProxyController extends Controller
         $user_id = getRedisData(Input::get('token'));
         $data = $this->handle->getProxyUsers($user_id);
         if (!empty($data)){
-            foreach ($data as $datum){
+            foreach ($data['data'] as $datum){
                 $datum->user = $userHandle->getWeChatUserById($datum->user_id);
             }
         }
@@ -75,7 +75,27 @@ class ProxyController extends Controller
     }
     public function passProxyApply()
     {
+        $state = Input::get('state',3);
+        $id = Input::get('id');
+        $apply = $this->handle->getProxyApply($id);
+        if ($state==2){
+            $this->handle->addUserProxy($apply->user_id);
+        }
+        $this->handle->addProxyApply($id,['state'=>$state]);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 
+    public function getProxyList()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getProxyList($page,$limit,1);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
     }
 
 }

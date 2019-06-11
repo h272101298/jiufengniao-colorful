@@ -50,4 +50,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::delete('document','GoodController@delDocument');
     Route::get('wechat/users','WeChatController@getWeChatUsers');
     Route::get('proxy/applies','ProxyController@getProxyApplies');
+    Route::post('proxy/apply','ProxyController@passProxyApply');
+    Route::get('proxy/list','ProxyController@getProxyList');
 });

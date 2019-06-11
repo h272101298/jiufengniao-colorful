@@ -9,6 +9,7 @@
 namespace App\Modules\Proxy;
 
 
+use App\Modules\User\WeChatUser;
 use Illuminate\Support\Facades\DB;
 
 class ProxyHandle
@@ -64,6 +65,10 @@ class ProxyHandle
             'data'=>$data
         ];
     }
+    public function getProxyApply($id)
+    {
+        return ProxyApply::find($id);
+    }
     public function addUserProxy($user_id)
     {
         $userProxy = new UserProxy();
@@ -99,5 +104,22 @@ class ProxyHandle
     public function getProxyUsers($user_id,$page=1,$limit=10)
     {
         return ProxyList::where('proxy_id','=',$user_id)->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+    }
+    public function getProxyList($page=1,$limit=10,$format=0)
+    {
+        $db =DB::table('user_proxies');
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        if ($format){
+            if (count($data)!=0){
+                foreach ($data as $datum){
+                    $datum->user = WeChatUser::find($datum->user_id);
+                }
+            }
+        }
+        return [
+            'data'=>$data,
+            'count'=>$count
+        ];
     }
 }
