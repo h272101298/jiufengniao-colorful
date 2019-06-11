@@ -34,8 +34,11 @@ class ProxyHandle
      * @return mixed
      * 获取用户的分销申请
      */
-    public function getUserProxyApply($user_id)
+    public function getUserProxyApply($user_id,$pass=1)
     {
+        if ($pass){
+            return ProxyApply::where('user_id','=',$user_id)->where('state','=',2)->first();
+        }
         return ProxyApply::where('user_id','=',$user_id)->first();
     }
 
@@ -89,6 +92,22 @@ class ProxyHandle
     public function getUserProxyAmount($user_id)
     {
         return ProxyAmount::where('user_id','=',$user_id)->first();
+    }
+    public function setUserProxyAmount($user_id,$amount)
+    {
+        $proxyAmount = ProxyAmount::where('user_id','=',$user_id)->first();
+        if (empty($proxyAmount)){
+            $proxyAmount = new ProxyAmount();
+            $proxyAmount->user_id = 0;
+            $proxyAmount->real_amount = 0;
+            $proxyAmount->amount = 0;
+        }
+        $proxyAmount->real_amount+=$amount;
+        $proxyAmount->amount+=$amount;
+        if ($proxyAmount->save()){
+            return true;
+        }
+        return false;
     }
     public function getProxyAmounts($page=1,$limit=10,$format=0)
     {
@@ -178,11 +197,16 @@ class ProxyHandle
         if ($format==1&&count($data)!=0){
             foreach ($data as $datum){
                 $datum->user = WeChatUser::find($datum->user_id);
+                $datum->apply = $this->getUserProxyApply($datum->user_id,1);
             }
         }
         return [
             'data'=>$data,
             'count'=>$count
         ];
+    }
+    public function getWithdraw($id)
+    {
+        return Withdraw::find($id);
     }
 }

@@ -149,6 +149,12 @@ class ProxyController extends Controller
             'user_id'=>$user_id,
             'amount'=>$amount
         ];
+        $userAmount = $this->handle->getUserProxyAmount($user_id);
+        if (empty($userAmount)||$userAmount->real_amount<$amount){
+            return jsonResponse([
+                'msg'=>'账户余额不足！'
+            ],433);
+        }
         if ($this->handle->addWithdraw(0,$data)){
             return jsonResponse([
                 'msg'=>'ok'
@@ -169,6 +175,27 @@ class ProxyController extends Controller
                 'proxy_apply'=>empty($apply)?0:$apply->state
             ]
         ]);
+    }
+
+    public function getProxyApply()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $data = $this->handle->getUserProxyApply($user_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function passWithdraw()
+    {
+        $id = Input::get('id');
+        $state = Input::get('state',3);
+        $withdraw = $this->handle->getWithdraw($id);
+        if ($state==3){
+            $this->handle->setUserProxyAmount($withdraw->user_id,0-$withdraw->amount);
+        }
+        $this->handle->addWithdraw($id,['state'=>$state]);
+        return jsonResponse(['msg'=>'ok']);
     }
 
 }

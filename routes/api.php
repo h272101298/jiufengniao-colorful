@@ -49,3 +49,4 @@ Route::get('documents','DocumentController@getDocuments');
 Route::get('document','GoodController@getDocument');
 Route::get('proxy/info','ProxyController@getProxyInfo');
 Route::post('withdraw','ProxyController@addWithdraw');
+Route::get('proxy/apply','ProxyController@getProxyApply');

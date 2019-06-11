@@ -17,7 +17,7 @@ class CreateWithdrawsTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('user_id');
             $table->float('amount')->default(0);
-            $table->tinyInteger('state')->default(1);
+            $table->tinyInteger('state')->default(1);//默认1 通过2 拒绝3
             $table->timestamps();
         });
     }
