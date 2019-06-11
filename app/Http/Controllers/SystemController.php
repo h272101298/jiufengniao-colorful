@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Modules\System\SystemHandle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class SystemController extends Controller
 {
@@ -79,6 +80,33 @@ class SystemController extends Controller
     public function getTxConfig()
     {
         $data = $this->handle->getTxConfig();
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function setNotifyConfig(Request $post)
+    {
+        $title = $post->title;
+        $content = $post->get('content');
+        if ($this->handle->setNotifyConfig($title,$content)){
+            return jsonResponse([
+                'msg'=>'ok'
+            ]);
+        }
+        throw new \Exception('ERROR');
+    }
+    public function getNotifyConfigs()
+    {
+        $data = $this->handle->getNotifyConfigs();
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getNotifyConfig()
+    {
+        $data = $this->handle->getNotifyConfig(Input::get('title'));
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$data

@@ -56,5 +56,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('proxy/amount/config','ProxyController@setProxyAmountConfig');
     Route::get('proxy/amounts','ProxyController@getProxyAmounts');
     Route::get('withdraws','ProxyController@getWithdraws');
-    Route::post('withdraw','ProxyController@passWithdraw');
+    Route::post('notify/config','SystemController@setNotifyConfig');
+    Route::get('notify/configs','SystemController@getNotifyConfigs');
+    Route::get('notify/config','SystemController@getNotifyConfig');
 });

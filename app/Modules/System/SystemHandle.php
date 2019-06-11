@@ -29,5 +29,26 @@ class SystemHandle
         }
         return false;
     }
+    public function setNotifyConfig($title,$content)
+    {
+        $config = NotifyConfig::where('title','=',$title)->first();
+        if (empty($config)){
+            $config = new NotifyConfig();
+            $config->title = $title;
+        }
+        $config->content = $content;
+        if ($config->save()){
+            return true;
+        }
+        return false;
+    }
+    public function getNotifyConfig($title)
+    {
+        return NotifyConfig::where('title','=',$title)->first();
+    }
+    public function getNotifyConfigs()
+    {
+        return NotifyConfig::all();
+    }
 
 }
