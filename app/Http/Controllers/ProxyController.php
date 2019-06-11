@@ -164,7 +164,7 @@ class ProxyController extends Controller
         return jsonResponse([
             'msg'=>'ok',
             'data'=>[
-                'is_proxy'=>$is_proxy,
+                'is_proxy'=>empty($is_proxy)?0:1,
                 'apply'=>empty($apply)?0:1,
                 'proxy_apply'=>empty($apply)?0:$apply->state
             ]
