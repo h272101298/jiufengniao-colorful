@@ -112,4 +112,12 @@ class SystemController extends Controller
             'data'=>$data
         ]);
     }
+    public function delNotifyConfig()
+    {
+        $id = Input::get('id');
+        $this->handle->delNotifyConfig($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 }

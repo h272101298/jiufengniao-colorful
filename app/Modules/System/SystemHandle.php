@@ -50,5 +50,9 @@ class SystemHandle
     {
         return NotifyConfig::all();
     }
+    public function delNotifyConfig($id)
+    {
+        return NotifyConfig::find($id)->delete();
+    }
 
 }
