@@ -33,7 +33,7 @@ class OrderController extends Controller
         $address_id = $post->address_id;
         $address = $userHandle->getUserAddress($address_id,0);
         $user_id = getUserToken($post->token);
-        $group = $post->group;
+        $group = 0;
         DB::beginTransaction();
         try{
             $orderSn = self::makePaySn($user_id);
@@ -50,9 +50,13 @@ class OrderController extends Controller
                     $origin_price = $product->score;
                     $price = $origin_price;
                     break;
-            }
-            if ($group){
-                $origin_price = $product->group_price;
+                case 'group':
+                    $goodHandle = new GoodHandle();
+                    $product = $goodHandle->getGood($product_id);
+                    $origin_price = $product->group_price;
+                    $price = ($origin_price*$number)*100;
+                    $group = 1;
+                    break;
             }
             $data = [
                 'orderSn'=>$orderSn,
