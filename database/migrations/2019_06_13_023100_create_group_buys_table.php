@@ -19,7 +19,7 @@ class CreateGroupBuysTable extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('good_id');
             $table->unsignedBigInteger('group_id')->default(0);
-            $table->tinyInteger('state')->default(1);//1默认 2 成功 3过期
+            $table->tinyInteger('state')->default(0);//0 默认1支付 2 成功 3过期
             $table->timestamps();
         });
     }

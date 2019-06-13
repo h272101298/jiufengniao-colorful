@@ -159,6 +159,17 @@ class OrderController extends Controller
         $sign = $wspay->getSign($data);
         if ($sign == $wx['sign']) {
             $order = $this->handle->getOrderBySn($wx['out_trade_no']);
+            if ($order->type =='group'){
+                $groupBuy = $this->handle->getOrderGroupBuy($order->id);
+                $this->handle->addGroupBuy($groupBuy->id,['state'=>1]);
+                if ($groupBuy->group_id!=0){
+                    $count = $this->handle->getGroupBuyCount($groupBuy->group_id);
+                    if ($count==2){
+                        $this->handle->addGroupBuy($groupBuy->id,['state'=>2]);
+                        $this->handle->updateOrderGroupBuy($groupBuy->group_id,['state'=>2]);
+                    }
+                }
+            }
             $order->state = 2;
             $order->save();
             return 'SUCCESS';
