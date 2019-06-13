@@ -40,7 +40,7 @@ class Transfer extends Command
     public function handle()
     {
         //
-        $transfers = Transfer::where('state','=',1)->get();
+        $transfers = \App\Modules\User\Transfer::where('state','=',1)->get();
         $config = TxConfig::first();
         $wxpay = new WxPay($config->app_id,$config->mch_id,$config->api_key);
         if (!empty($transfers)){
