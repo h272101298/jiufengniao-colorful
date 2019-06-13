@@ -166,7 +166,7 @@ class OrderController extends Controller
                     $count = $this->handle->getGroupBuyCount($groupBuy->group_id);
                     if ($count+1==2){
                         $this->handle->addGroupBuy($groupBuy->id,['state'=>2]);
-                        $this->handle->updateOrderGroupBuy($groupBuy->group_id,['state'=>2]);
+                        $this->handle->addGroupBuy($groupBuy->group_id,['state'=>2]);
                     }
                 }
             }
