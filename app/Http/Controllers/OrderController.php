@@ -9,6 +9,7 @@ use App\Modules\Score\ScoreHandle;
 use App\Modules\User\UserHandle;
 use App\Modules\User\WeChatUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class OrderController extends Controller
@@ -33,48 +34,66 @@ class OrderController extends Controller
         $address = $userHandle->getUserAddress($address_id,0);
         $user_id = getUserToken($post->token);
         $group = $post->group;
-        $orderSn = self::makePaySn($user_id);
-        switch ($type){
-            case 'origin':
-                $goodHandle = new GoodHandle();
-                $product = $goodHandle->getGood($product_id);
-                $origin_price = $product->price;
-                $price = ($origin_price*$number)*100;
-                break;
-            case 'score':
-                $scoreHandle = new ScoreHandle();
-                $product = $scoreHandle->getScoreProduct($product_id);
-                $origin_price = $product->score;
-                $price = $origin_price;
-                break;
-        }
-        $data = [
-            'orderSn'=>$orderSn,
-            'number'=>$number,
-            'user_id'=>$user_id,
-            'product_id'=>$product_id,
-            'origin_price'=>$origin_price,
-            'price'=>$price,
-            'picture'=>$picture,
-            'type'=>$type,
-        ];
-        $result = $this->handle->addOrder(0,$data);
-        if ($result){
-            $addressData = [
-                'name'=>$address->name,
-                'city'=>$address->city,
-                'address'=>$address->address,
-                'phone'=>$address->phone,
-                'order_id'=>$result
+        DB::beginTransaction();
+        try{
+            $orderSn = self::makePaySn($user_id);
+            switch ($type){
+                case 'origin':
+                    $goodHandle = new GoodHandle();
+                    $product = $goodHandle->getGood($product_id);
+                    $origin_price = $product->price;
+                    $price = ($origin_price*$number)*100;
+                    break;
+                case 'score':
+                    $scoreHandle = new ScoreHandle();
+                    $product = $scoreHandle->getScoreProduct($product_id);
+                    $origin_price = $product->score;
+                    $price = $origin_price;
+                    break;
+            }
+            if ($group){
+                $origin_price = $product->group_price;
+            }
+            $data = [
+                'orderSn'=>$orderSn,
+                'number'=>$number,
+                'user_id'=>$user_id,
+                'product_id'=>$product_id,
+                'origin_price'=>$origin_price,
+                'price'=>$price,
+                'picture'=>$picture,
+                'type'=>$type,
             ];
-            $this->handle->addOrderAddress(0,$addressData);
+            $result = $this->handle->addOrder(0,$data);
+            if ($result){
+                $addressData = [
+                    'name'=>$address->name,
+                    'city'=>$address->city,
+                    'address'=>$address->address,
+                    'phone'=>$address->phone,
+                    'order_id'=>$result
+                ];
+                if ($group){
+                    $this->handle->addGroupBuy(0,[
+                        'user_id'=>$user_id,
+                        'order_id'=>$result,
+                        'good_id'=>$product_id
+                    ]);
+                }
+                $this->handle->addOrderAddress(0,$addressData);
+            }
+            DB::commit();
+            return jsonResponse([
+                'msg'=>'ok',
+                'data'=>[
+                    'number'=>$orderSn
+                ]
+            ]);
+        }catch (\Exception $exception) {
+            DB::rollBack();
+            throw new \Exception($exception->getMessage());
         }
-        return jsonResponse([
-            'msg'=>'ok',
-            'data'=>[
-                'number'=>$orderSn
-            ]
-        ]);
+
     }
     public function payOrder(Request $post)
     {

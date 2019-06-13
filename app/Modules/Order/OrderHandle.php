@@ -79,5 +79,20 @@ class OrderHandle
             'refund'=>$refund,
         ];
     }
+    public function addGroupBuy($id,$data)
+    {
+        $groupBuy = $id?GroupBuy::find($id):new GroupBuy();
+        foreach ($data as $key => $value){
+            $groupBuy->$key = $value;
+        }
+        if ($groupBuy->save()){
+            return $groupBuy->id;
+        }
+        return false;
+    }
+    public function checkGroupBuy($user_id,$good_id)
+    {
+        return GroupBuy::where('user_id','=',$user_id)->where('good_id','=',$good_id)->count();
+    }
 
 }
