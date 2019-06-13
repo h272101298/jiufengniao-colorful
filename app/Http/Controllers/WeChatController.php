@@ -6,6 +6,7 @@ use App\Http\Requests\LoginPost;
 use App\Http\Requests\UserAdressPost;
 use App\Http\Requests\UserInfoPost;
 use App\Libraries\Wxxcx;
+use App\Modules\System\TxConfig;
 use App\Modules\User\UserHandle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -182,5 +183,31 @@ class WeChatController extends Controller
             'msg'=>'ok',
             'data'=>$data
         ]);
+    }
+    public function makeQrcode(Request $post)
+    {
+        $data = $post->all();
+        $page = $data['page'];
+        unset($data['page']);
+        $scene = '';
+        foreach ($data as $key =>$value){
+            $scene .=$key.'='.$value.'&';
+        }
+        $scene = substr($scene,0,-1);
+        $config = TxConfig::first();
+        $wx = new Wxxcx($config->app_id,$config->app_secret);
+        $data = [
+            'scene'=>$scene,
+            'page'=>$page
+        ];
+        $data = json_encode($data);
+        $token = getRedisData('access_token');
+        if (!$token){
+            $token = $wx->getAccessToken();
+            $token = $token['access_token'];
+            setRedisData('access_token',$token,7100);
+        }
+        $qrcode = $wx->get_http_array('https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token='.$token,$data,'json');
+        return response()->make($qrcode,200,['content-type'=>'image/jpeg']);
     }
 }

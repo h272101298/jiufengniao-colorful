@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::post('login','WeChatController@createUser');//Login
+Route::get('qrcode','WeChatController@makeQrcode');//Login
 Route::post('pay/notify','OrderController@notifyOrder');
 Route::post('proxy/apply','ProxyController@addProxyApply');//proxyApply
 Route::post('address','WeChatController@addUserAddress');//proxyApply
