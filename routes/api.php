@@ -31,6 +31,7 @@ Route::get('pictures','PictureController@getPictures');//proxyApply
 Route::post('picture','PictureController@addPicture');//
 Route::get('types','GoodController@getTypes');
 Route::get('goods','GoodController@getGoods');
+Route::get('good','GoodController@getGood');
 Route::post('good/detail','GoodController@addGoodDetail');
 Route::get('banners','GoodController@getBanners');
 Route::get('good/details','GoodController@getGoodDetails');

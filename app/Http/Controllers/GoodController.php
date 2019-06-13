@@ -126,7 +126,6 @@ class GoodController extends Controller
             'data' => $data
         ]);
     }
-
     public function getRecommend()
     {
         $data = $this->handle->getRecommend();
