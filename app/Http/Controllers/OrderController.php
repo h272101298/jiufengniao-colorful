@@ -327,13 +327,36 @@ class OrderController extends Controller
         $express_id = Input::get('express_id',0);
         $express_number = Input::get('express_number','');
         $order = $this->handle->getOrder($order_id);
-        if ($order->state!=1){
+        if ($order->state!=2){
             throw new \Exception('当前状态不允许发货！');
         }
         $this->handle->addOrder($order_id,[
             'express_id'=>$express_id,
             'express_number'=>$express_number
         ]);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+    public function refundOrder()
+    {
+        $id = Input::get('id');
+        $pass = Input::get('pass',1);
+        if ($pass==1){
+            $state = 6;
+            $order = $this->handle->getOrder($id);
+            $userHandle = new UserHandle();
+            $user = $userHandle->getWeChatUserById($order->user_id);
+            $userHandle->addTransfer(0,[
+                'open_id'=>$user->open_id,
+                'number'=>self::makePaySn($user->id),
+                'amount'=>$order->price,
+                'desc'=>'退款'
+            ]);
+        }else{
+            $state = 7;
+        }
+        $this->handle->addOrder($id,['state'=>$state]);
         return jsonResponse([
             'msg'=>'ok'
         ]);

@@ -226,5 +226,19 @@ class UserHandle
             'fanSum'=>$fanSum
         ];
     }
+    public function addTransfer($id,$data)
+    {
+        $transfer = $id?Transfer::find($id):new Transfer();
+        foreach ($data as $key => $value){
+            $transfer->$key = $value;
+        }
+        if ($transfer->save()){
+            return $transfer->id;
+        }
+    }
+    public function getTransfer($state)
+    {
+        return Transfer::where('state','=',$state)->get();
+    }
 
 }
