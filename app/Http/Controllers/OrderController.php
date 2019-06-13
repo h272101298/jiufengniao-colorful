@@ -212,4 +212,25 @@ class OrderController extends Controller
             'data'=>$data
         ]);
     }
+    public function cancelOrder()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $order_id = Input::get('order_id');
+        $order = $this->handle->getOrder($order_id);
+        if ($order->type!='origin'){
+            throw new \Exception('该订单类型不允许退款');
+        }
+        if ($order->state>2){
+            throw new \Exception('该状态不允许退款！');
+        }
+        if ($user_id!=$order->user_id){
+            throw new \Exception('无权操作！');
+        }
+        if ($this->handle->addOrder($order_id,['state'=>5])){
+            return jsonResponse([
+                'msg'=>'ok'
+            ]);
+        }
+        throw new \Exception('error');
+    }
 }
