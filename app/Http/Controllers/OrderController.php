@@ -332,7 +332,8 @@ class OrderController extends Controller
         }
         $this->handle->addOrder($order_id,[
             'express_id'=>$express_id,
-            'express_number'=>$express_number
+            'express_number'=>$express_number,
+            'state'=>3
         ]);
         return jsonResponse([
             'msg'=>'ok'
