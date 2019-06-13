@@ -163,4 +163,27 @@ class OrderController extends Controller
             'data'=>$data
         ]);
     }
+    public function getUserOrders()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $user_id = getRedisData(Input::get('token'));
+        $state = Input::get('state',1);
+        $data = $this->handle->getOrders($page,$limit,[$user_id],$state);
+        if (!empty($data['data'])){
+            foreach ($data['data'] as $datum){
+                if ($datum->type=='score'){
+                    $scoreHandle = new ScoreHandle();
+                    $datum->product = $scoreHandle->getScoreProduct($datum->product_id);
+                }else{
+                    $goodHandle = new GoodHandle();
+                    $datum->product = $goodHandle->getGood($datum->product_id);
+                }
+            }
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }

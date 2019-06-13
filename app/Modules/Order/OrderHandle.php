@@ -24,7 +24,7 @@ class OrderHandle
         }
         return false;
     }
-    public function getOrders($page=1,$limit=10,$user_id=[],$type)
+    public function getOrders($page=1,$limit=10,$user_id=[],$type,$state=0)
     {
         $db = DB::table('orders');
         if (count($user_id)!=0){
@@ -32,6 +32,9 @@ class OrderHandle
         }
         if ($type){
             $db->where('type','=',$type);
+        }
+        if ($state){
+            $db->where('state','=',$state);
         }
         $count = $db->count();
         $data = $db->limit($limit)->offset(($page-1)*$limit)->orderBy('id','DESC')->get();
