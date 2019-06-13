@@ -28,7 +28,7 @@ class OrderHandle
     {
         $db = DB::table('orders');
         if (count($user_id)!=0){
-            $db->whereIn('user_id','=',$user_id);
+            $db->whereIn('user_id',$user_id);
         }
         if ($type){
             $db->where('type','=',$type);
