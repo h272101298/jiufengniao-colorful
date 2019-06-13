@@ -362,4 +362,20 @@ class OrderController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function confirmOrder()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $order_id = Input::get('order_id');
+        $order = $this->handle->getOrder($order_id);
+        if ($order->state!=3){
+            throw new \Exception('该状态不允许收货！');
+        }
+        if ($user_id!=$order->user_id){
+            throw new \Exception('无权操作！');
+        }
+        $this->handle->addOrder($order_id,['state'=>4]);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 }
