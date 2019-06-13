@@ -109,9 +109,9 @@ class OrderHandle
     {
         return GroupBuy::find($id);
     }
-    public function getGroupBuyCount($order_id)
+    public function getGroupBuyCount($group_id)
     {
-        return GroupBuy::where('order_id','=',$order_id)->count();
+        return GroupBuy::where('group_id','=',$group_id)->count();
     }
     public function updateOrderGroupBuy($group_id,$data)
     {
