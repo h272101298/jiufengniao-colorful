@@ -235,4 +235,31 @@ class OrderController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function getOrders()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $state = Input::get('state',1);
+        $type = Input::get('type');
+        $data = $this->handle->getOrders($page,$limit,[],$type,$state);
+        if (!empty($data['data'])){
+            foreach ($data['data'] as $datum){
+                if ($datum->type=='score'){
+                    $scoreHandle = new ScoreHandle();
+                    $datum->product = $scoreHandle->getScoreProduct($datum->product_id);
+                }elseif($datum->type=='group'){
+                    $goodHandle = new GoodHandle();
+                    $datum->product = $goodHandle->getGood($datum->product_id);
+                    $datum->group = $this->handle->getOrderGroupBuy($datum->id);
+                }else{
+                    $goodHandle = new GoodHandle();
+                    $datum->product = $goodHandle->getGood($datum->product_id);
+                }
+            }
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }
