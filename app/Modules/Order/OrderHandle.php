@@ -47,6 +47,10 @@ class OrderHandle
     {
         return Order::find($id);
     }
+    public function delOrder($id)
+    {
+        return Order::find($id)->delete();
+    }
     public function getOrderBySn($sn)
     {
         return Order::where('orderSn','=',$sn)->first();
