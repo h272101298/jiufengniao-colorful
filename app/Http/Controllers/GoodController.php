@@ -193,7 +193,12 @@ class GoodController extends Controller
         $page = Input::get('page', 1);
         $limit = Input::get('limit', 10);
         $type_id = Input::get('type_id', 0);
-        $data = $this->handle->getDetails($page, $limit, $type_id, 1);
+        $token = Input::get('token');
+        $user_id = 0;
+        if ($token){
+            $user_id = getRedisData($token);
+        }
+        $data = $this->handle->getDetails($page, $limit, $type_id, $user_id,1);
         return jsonResponse([
             'msg' => 'ok',
             'data' => $data
