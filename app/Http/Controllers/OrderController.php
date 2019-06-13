@@ -229,7 +229,7 @@ class OrderController extends Controller
         if ($order->state==1){
             $this->handle->delOrder($order_id);
         }else{
-            $this->handle->addOrder($order_id,['state'=>5])
+            $this->handle->addOrder($order_id,['state'=>5]);
         }
         return jsonResponse([
             'msg'=>'ok'
