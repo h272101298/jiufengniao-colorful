@@ -175,6 +175,10 @@ class OrderController extends Controller
                 if ($datum->type=='score'){
                     $scoreHandle = new ScoreHandle();
                     $datum->product = $scoreHandle->getScoreProduct($datum->product_id);
+                }elseif($datum->type=='group'){
+                    $goodHandle = new GoodHandle();
+                    $datum->product = $goodHandle->getGood($datum->product_id);
+                    $datum->group = $this->handle->getOrderGroupBuy($datum->id);
                 }else{
                     $goodHandle = new GoodHandle();
                     $datum->product = $goodHandle->getGood($datum->product_id);

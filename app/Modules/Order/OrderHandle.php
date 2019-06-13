@@ -97,5 +97,9 @@ class OrderHandle
     {
         return GroupBuy::where('user_id','=',$user_id)->where('good_id','=',$good_id)->count();
     }
+    public function getOrderGroupBuy($order_id)
+    {
+        return GroupBuy::where('order_id','=',$order_id)->first();
+    }
 
 }
