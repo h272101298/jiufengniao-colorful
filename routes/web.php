@@ -66,4 +66,5 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('express','OrderController@getExpress');
     Route::post('express','OrderController@addExpress');
     Route::get('order','OrderController@getOrder');
+    Route::post('delivery/order','OrderController@deliveryOrder');
 });

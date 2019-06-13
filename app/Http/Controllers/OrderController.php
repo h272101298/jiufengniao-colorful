@@ -321,4 +321,21 @@ class OrderController extends Controller
             'data'=>$data
         ]);
     }
+    public function deliveryOrder()
+    {
+        $order_id = Input::get('id');
+        $express_id = Input::get('express_id',0);
+        $express_number = Input::get('express_number','');
+        $order = $this->handle->getOrder($order_id);
+        if ($order->state!=1){
+            throw new \Exception('当前状态不允许发货！');
+        }
+        $this->handle->addOrder($order_id,[
+            'express_id'=>$express_id,
+            'express_number'=>$express_number
+        ]);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 }
