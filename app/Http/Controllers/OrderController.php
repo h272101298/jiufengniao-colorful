@@ -34,6 +34,7 @@ class OrderController extends Controller
         $address = $userHandle->getUserAddress($address_id,0);
         $user_id = getUserToken($post->token);
         $group = 0;
+        $group_id = $post->group_id?$post->group_id:0;
         DB::beginTransaction();
         try{
             $orderSn = self::makePaySn($user_id);
@@ -68,6 +69,15 @@ class OrderController extends Controller
                 'picture'=>$picture,
                 'type'=>$type,
             ];
+            if ($group_id!=0){
+                if ($this->handle->checkJoinGroup($group_id,$user_id)){
+                    throw new \Exception('不能重复参团！');
+                }
+                $group = $this->handle->getGroupBuy($group_id);
+                if ($group->state!=1){
+                    throw new \Exception('该团购已过期！');
+                }
+            }
             $result = $this->handle->addOrder(0,$data);
             if ($result){
                 $addressData = [
@@ -81,7 +91,8 @@ class OrderController extends Controller
                     $this->handle->addGroupBuy(0,[
                         'user_id'=>$user_id,
                         'order_id'=>$result,
-                        'good_id'=>$product_id
+                        'good_id'=>$product_id,
+                        'group_id'=>$group_id
                     ]);
                 }
                 $this->handle->addOrderAddress(0,$addressData);

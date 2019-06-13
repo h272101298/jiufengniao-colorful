@@ -101,5 +101,13 @@ class OrderHandle
     {
         return GroupBuy::where('order_id','=',$order_id)->first();
     }
+    public function checkJoinGroup($group_id,$user_id)
+    {
+        return GroupBuy::where('user_id','=',$user_id)->where('group_id','=',$group_id)->count();
+    }
+    public function getGroupBuy($id)
+    {
+        return GroupBuy::find($id);
+    }
 
 }
