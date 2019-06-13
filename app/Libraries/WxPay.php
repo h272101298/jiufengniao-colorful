@@ -197,5 +197,25 @@ class WxPay
     {
         return $this->prepay_id;
     }
+    public function transfer($order_id,$open_id,$amount,$desc,$ip,$sslCert,$sslKey,$caInfo='')
+    {
+        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
+        $parameters = [
+            'mch_appid' => $this->appid,
+            'mchid' => $this->mch_id,
+            'nonce_str' =>$this->createNoncestr(),
+            'partner_trade_no' => $order_id,
+            'openid' => $open_id,
+            'check_name' => 'NO_CHECK',
+            'amount' => $amount,
+            'desc' => $desc,
+            'spbill_create_ip'=>$ip
+        ];
+        $parameters['sign'] = $this->getSign($parameters);
+//        dump($parameters);
+        $xmldata = $this->arrayToXml($parameters);
+        $transfData = $this->xmlToArray($this->postXmlCurl($xmldata, $url, 60,TRUE,$sslCert,$sslKey,$caInfo));
+        return $transfData;
+    }
 
 }
