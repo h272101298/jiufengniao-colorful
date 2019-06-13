@@ -301,4 +301,24 @@ class OrderController extends Controller
             'data'=>$data
         ]);
     }
+    public function getOrder()
+    {
+        $id = Input::get('id');
+        $data = $this->handle->getOrder($id);
+        if ($data->type=='score'){
+            $scoreHandle = new ScoreHandle();
+            $data->product = $scoreHandle->getScoreProduct($data->product_id);
+        }elseif($data->type=='group'){
+            $goodHandle = new GoodHandle();
+            $data->product = $goodHandle->getGood($data->product_id);
+            $data->group = $this->handle->getOrderGroupBuy($data->id);
+        }else{
+            $goodHandle = new GoodHandle();
+            $data->product = $goodHandle->getGood($data->product_id);
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }

@@ -65,4 +65,5 @@ Route::group(['middleware'=>['auth']],function (){
     Route::delete('express','OrderController@delExpress');
     Route::get('express','OrderController@getExpress');
     Route::post('express','OrderController@addExpress');
+    Route::get('order','OrderController@getOrder');
 });
