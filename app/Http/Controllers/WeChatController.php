@@ -209,6 +209,8 @@ class WeChatController extends Controller
             $token = $token['access_token'];
             setRedisData('access_token',$token,7100);
         }
+        var_dump($token);
+        dump($data);
         $qrcode = $wx->get_http_array('https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token='.$token,$data,'json');
         return response()->make($qrcode,200,['content-type'=>'image/jpeg']);
     }
