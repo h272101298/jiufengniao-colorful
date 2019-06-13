@@ -46,7 +46,7 @@ class Transfer extends Command
         if (!empty($transfers)){
             $path = base_path().'/public/';
             foreach ($transfers as $transfer){
-                $data = $wxpay->transfer($transfer->number,$transfer->open_id,$transfer->amount,$transfer->desc,'39.104.98.40',$path.$config->ssl_cert,$path.$config->key);
+                $data = $wxpay->transfer($transfer->number,$transfer->open_id,$transfer->amount,$transfer->desc,'39.104.98.40',$path.$config->ssl_cert,$path.$config->ssl_key);
 //                $data = $this->xmlToArray($data);
                 dump($data);
                 if ($data['result_code']=='SUCCESS'){
