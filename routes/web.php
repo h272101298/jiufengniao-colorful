@@ -60,4 +60,5 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('notify/configs','SystemController@getNotifyConfigs');
     Route::get('notify/config','SystemController@getNotifyConfig');
     Route::get('del/notify/config','SystemController@delNotifyConfig');
+    Route::get('orders','OrderController@getOrders');
 });
