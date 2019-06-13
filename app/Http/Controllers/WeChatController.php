@@ -34,7 +34,8 @@ class WeChatController extends Controller
                 return response()->json([
                     'msg'=>'ok',
                     'data'=>[
-                        'token'=>$token
+                        'token'=>$token,
+                        'id'=>$user->id
                     ]
                 ]);
             }else{
@@ -48,7 +49,8 @@ class WeChatController extends Controller
                 return response()->json([
                     'msg'=>'ok',
                     'data'=>[
-                        'token'=>$token
+                        'token'=>$token,
+                        'id'=>$user->id
                     ]
                 ]);
             }
