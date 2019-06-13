@@ -68,12 +68,12 @@ class OrderHandle
     }
     public function getUserOrderCount($user_id)
     {
-        $db = Order::where('user_id','=',$user_id);
-        $unPay = $db->where('state','=',1)->count();
-        $unDelivery = $db->where('state','=',2)->count();
-        $unConfirm = $db->where('state','=',3)->count();
-        $finish = $db->where('state','=',4)->count();
-        $refund = $db->whereIn('state',[5,6])->count();
+//        $db = Order::where('user_id','=',$user_id);
+        $unPay = Order::where('user_id','=',$user_id)->where('state','=',1)->count();
+        $unDelivery = Order::where('user_id','=',$user_id)->where('state','=',2)->count();
+        $unConfirm = Order::where('user_id','=',$user_id)->where('state','=',3)->count();
+        $finish = Order::where('user_id','=',$user_id)->where('state','=',4)->count();
+        $refund = Order::where('user_id','=',$user_id)->whereIn('state',[5,6])->count();
         return [
             'unPay'=>$unPay,
             'unDelivery'=>$unDelivery,
