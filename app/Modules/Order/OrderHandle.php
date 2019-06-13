@@ -78,7 +78,7 @@ class OrderHandle
         $unDelivery = Order::where('user_id','=',$user_id)->where('state','=',2)->count();
         $unConfirm = Order::where('user_id','=',$user_id)->where('state','=',3)->count();
         $finish = Order::where('user_id','=',$user_id)->where('state','=',4)->count();
-        $refund = Order::where('user_id','=',$user_id)->whereIn('state',[5,6])->count();
+        $refund = Order::where('user_id','=',$user_id)->whereIn('state',[5,6,7])->count();
         return [
             'unPay'=>$unPay,
             'unDelivery'=>$unDelivery,
