@@ -10,6 +10,7 @@ namespace App\Modules\Order;
 
 
 use Illuminate\Support\Facades\DB;
+use function PHPSTORM_META\type;
 
 class OrderHandle
 {
@@ -120,6 +121,35 @@ class OrderHandle
     public function updateOrderGroupBuy($group_id,$data)
     {
         return GroupBuy::where('group_id','=',$group_id)->update($data);
+    }
+    public function getExpresses($page=1,$limit=10)
+    {
+        $db = DB::table('expresses');
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'data'=>$data,
+            'count'=>$count
+        ];
+    }
+    public function setExpress($id,$data)
+    {
+        $express = $id?Express::find($id):new Express();
+        foreach ($data as $key => $value){
+            $express->$key = $value;
+        }
+        if ($express->save()){
+            return true;
+        }
+        return false;
+    }
+    public function getExpress($id)
+    {
+        return Express::find($id);
+    }
+    public function delExpress($id)
+    {
+        return Express::find($id)->delete();
     }
 
 }

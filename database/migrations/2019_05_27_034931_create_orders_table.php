@@ -24,6 +24,8 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->string('picture')->nullable();
             $table->string('notify_id')->nullable();
+            $table->unsignedBigInteger('express_id')->default(0);
+            $table->string('express_number')->nullable();
             $table->integer('number');
             $table->timestamps();
         });

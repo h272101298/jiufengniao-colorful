@@ -61,4 +61,8 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('notify/config','SystemController@getNotifyConfig');
     Route::get('del/notify/config','SystemController@delNotifyConfig');
     Route::get('orders','OrderController@getOrders');
+    Route::get('expresses','OrderController@getExpresses');
+    Route::delete('express','OrderController@delExpress');
+    Route::get('express','OrderController@getExpress');
+    Route::post('express','OrderController@addExpress');
 });

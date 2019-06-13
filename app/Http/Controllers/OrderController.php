@@ -262,4 +262,43 @@ class OrderController extends Controller
             'data'=>$data
         ]);
     }
+    public function addExpress(Request $post)
+    {
+        $id = $post->id?$post->id:0;
+        $data = [
+            'title'=>$post->title,
+            'code'=>$post->code
+        ];
+        $this->handle->setExpress($id,$data);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+    public function getExpresses()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getExpresses($page,$limit);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function delExpress()
+    {
+        $id = Input::get('id');
+        $this->handle->delExpress($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+    public function getExpress()
+    {
+        $id = Input::get('id');
+        $data = $this->handle->getExpress($id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }
