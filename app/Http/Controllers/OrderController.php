@@ -169,7 +169,7 @@ class OrderController extends Controller
         $limit = Input::get('limit',10);
         $user_id = getRedisData(Input::get('token'));
         $state = Input::get('state',1);
-        $data = $this->handle->getOrders($page,$limit,[$user_id],$state);
+        $data = $this->handle->getOrders($page,$limit,[$user_id],'',$state);
         if (!empty($data['data'])){
             foreach ($data['data'] as $datum){
                 if ($datum->type=='score'){

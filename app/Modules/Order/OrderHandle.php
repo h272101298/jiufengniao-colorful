@@ -30,7 +30,7 @@ class OrderHandle
         if (count($user_id)!=0){
             $db->whereIn('user_id',$user_id);
         }
-        if ($type){
+        if (strlen($type)!=0){
             $db->where('type','=',$type);
         }
         if ($state){
