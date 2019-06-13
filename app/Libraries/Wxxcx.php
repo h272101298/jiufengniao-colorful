@@ -68,7 +68,7 @@ class Wxxcx
     {
         $access_token_url = sprintf($this->access_token_url,$this->appid,$this->secret);
         $access_token = $this->request($access_token_url);
-        dump($access_token);
+//        dump($access_token);
         if(!isset($access_token['access_token'])){
             return false;
         }
