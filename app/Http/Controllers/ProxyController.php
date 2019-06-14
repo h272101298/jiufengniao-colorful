@@ -198,7 +198,7 @@ class ProxyController extends Controller
         $this->handle->addWithdraw($id,['state'=>$state]);
         return jsonResponse(['msg'=>'ok']);
     }
-    public function getProxyUser()
+    public function getProxyUsersApi()
     {
         $page = Input::get('page',1);
         $limit = Input::get('limit',10);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Modules\Good\GoodHandle;
+use App\Modules\User\UserHandle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -202,6 +203,23 @@ class GoodController extends Controller
         return jsonResponse([
             'msg' => 'ok',
             'data' => $data
+        ]);
+    }
+    public function getGoodDetail()
+    {
+        $id = Input::get('id');
+        $detail = $this->handle->getDetail($id);
+        if ($detail){
+            $userHandle = new UserHandle();
+            $detail->user = $userHandle->getWeChatUserById($detail->user_id);
+            $detail->images = $this->handle->getDetailImages($detail->id);
+            $detail->likes = $this->handle->countDetailLikes($detail->id);
+            $detail->comments = $this->handle->getGoodComments($detail->id);
+            $detail->commentCount = count($detail->comments);
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$detail
         ]);
     }
 }

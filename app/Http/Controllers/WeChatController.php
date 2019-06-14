@@ -174,6 +174,20 @@ class WeChatController extends Controller
             'data'=>$data
         ]);
     }
+    public function setAttention()
+    {
+        $attention_id = Input::get('attention_id');
+        $user_id = getRedisData(Input::get('token'));
+        $count = $this->handle->checkAttentionUser($user_id,$attention_id);
+        if ($count){
+            $this->handle->delAttentionUser($user_id,$attention_id);
+        }else{
+            $this->handle->addAttentionUser($user_id,$attention_id);
+        }
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
     public function getWeChatUsers()
     {
         $page = Input::get('page',1);

@@ -163,6 +163,10 @@ class GoodHandle
         }
         return false;
     }
+    public function getDetail($id)
+    {
+        return GoodDetail::find($id);
+    }
     public function getDetails($page=1,$limit =10 ,$type_id = 0,$user_id=0,$format=0)
     {
         $db = DB::table('good_details');
@@ -186,5 +190,35 @@ class GoodHandle
             'data'=>$data
         ];
     }
-
+    public function likeDetail($user_id,$detail_id)
+    {
+        $like = DetailLike::where('user_id','=',$user_id)->where('$detail_id','=',$detail_id)->first();
+        if (empty($like)){
+            $like = new DetailLike();
+            $like->user_id = $user_id;
+            $like->detail_id = $detail_id;
+            $like->save();
+        }
+        return true;
+    }
+    public function checkLikeDetail($user_id,$detail_id)
+    {
+        return DetailLike::where('user_id','=',$user_id)->where('$detail_id','=',$detail_id)->count();
+    }
+    public function dislikeDetail($user_id,$detail_id)
+    {
+        $like = DetailLike::where('user_id','=',$user_id)->where('$detail_id','=',$detail_id)->first();
+        if ($like){
+            $like->delete();
+        }
+        return true;
+    }
+    public function countDetailLikes($detail_id)
+    {
+        return DetailLike::where('$detail_id','=',$detail_id)->count();
+    }
+    public function countLikeDetails($user_id)
+    {
+        return DetailLike::where('user_id','=',$user_id)->count();
+    }
 }

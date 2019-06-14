@@ -77,10 +77,7 @@ class UserHandle
         }
         return false;
     }
-    public function addAttentionUser($user_id,$attention_id)
-    {
-//        $attention =
-    }
+
     //添加地址
     public function addUserAddress($id,$data)
     {
@@ -225,6 +222,29 @@ class UserHandle
             'attentionSum'=>$attentionSum,
             'fanSum'=>$fanSum
         ];
+    }
+    public function addAttentionUser($user_id,$attention_id)
+    {
+        $attention = Attention::where('user_id','=',$user_id)->where('attention_id','=',$attention_id)->first();
+        if (empty($attention)){
+            $attention = new Attention();
+            $attention->user_id = $user_id;
+            $attention->attention_id = $attention_id;
+            $attention->save();
+        }
+        return true;
+    }
+    public function delAttentionUser($user_id,$attention_id)
+    {
+        $attention = Attention::where('user_id','=',$user_id)->where('attention_id','=',$attention_id)->first();
+        if ($attention){
+            $attention->delete();
+        }
+        return true;
+    }
+    public function checkAttentionUser($user_id,$attention_id)
+    {
+        return Attention::where('user_id','=',$user_id)->where('attention_id','=',$attention_id)->count();
     }
     public function addTransfer($id,$data)
     {
