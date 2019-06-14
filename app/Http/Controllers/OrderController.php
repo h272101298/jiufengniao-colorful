@@ -6,6 +6,7 @@ use App\Libraries\WxPay;
 use App\Modules\Good\GoodHandle;
 use App\Modules\Order\OrderHandle;
 use App\Modules\Score\ScoreHandle;
+use App\Modules\System\SystemHandle;
 use App\Modules\User\UserHandle;
 use App\Modules\User\WeChatUser;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class OrderController extends Controller
         $user_id = getUserToken($post->token);
         $group = 0;
         $group_id = $post->group_id?$post->group_id:0;
+        $state = 1;
         DB::beginTransaction();
         try{
             $orderSn = self::makePaySn($user_id);
@@ -50,6 +52,7 @@ class OrderController extends Controller
                     $product = $scoreHandle->getScoreProduct($product_id);
                     $origin_price = $product->score;
                     $price = $origin_price;
+                    $state = 2;
                     break;
                 case 'group':
                     $goodHandle = new GoodHandle();
@@ -68,6 +71,7 @@ class OrderController extends Controller
                 'price'=>$price,
                 'picture'=>$picture,
                 'type'=>$type,
+                'state'=>$state
             ];
             if ($group_id!=0){
                 if ($this->handle->checkJoinGroup($group_id,$user_id)){
@@ -88,11 +92,14 @@ class OrderController extends Controller
                     'order_id'=>$result
                 ];
                 if ($group){
+                    $systemHandle = new SystemHandle();
+                    $config = $systemHandle->getNotifyConfig('grouptime');
                     $this->handle->addGroupBuy(0,[
                         'user_id'=>$user_id,
                         'order_id'=>$result,
                         'good_id'=>$product_id,
-                        'group_id'=>$group_id
+                        'group_id'=>$group_id,
+                        'end'=>empty($config)?time():time()+$config->content*60*60
                     ]);
                 }
                 $this->handle->addOrderAddress(0,$addressData);

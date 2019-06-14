@@ -152,9 +152,13 @@ class UserHandle
         if (empty($userScore)){
             $userScore = new UserScore();
             $userScore->score = 0 ;
+            $userScore->real_score = 0 ;
             $userScore->user_id = $user_id;
         }
-        $userScore->score += $score;
+        $userScore->real_score += $score;
+        if ($score>0){
+            $userScore->score += $score;
+        }
         if ($userScore->save()){
             return true;
         }
@@ -174,9 +178,12 @@ class UserHandle
         if (empty($userScore)){
             $userScore = new UserScore();
             $userScore->score = 0 ;
+            $userScore->real_score = 0 ;
             $userScore->user_id = $user_id;
         }
         $userScore->score = $score;
+        $userScore->real_score = $score;
+
         if ($userScore->save()){
             return true;
         }
@@ -221,6 +228,26 @@ class UserHandle
         return [
             'attentionSum'=>$attentionSum,
             'fanSum'=>$fanSum
+        ];
+    }
+    public function getUserAttentions($user_id,$page=1,$limit=10)
+    {
+        $db = Attention::where('user_id','=',$user_id);
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'data'=>$data,
+            'count'=>$count
+        ];
+    }
+    public function getUserFans($user_id,$page=1,$limit=10)
+    {
+        $db = Attention::where('attention_id','=',$user_id);
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'data'=>$data,
+            'count'=>$count
         ];
     }
     public function addAttentionUser($user_id,$attention_id)

@@ -120,4 +120,43 @@ class SystemController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function getLevelConfigs()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getLevelConfigs($page,$limit);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getLevelConfig()
+    {
+        $id = Input::get('id');
+        $data = $this->handle->getLevelConfig($id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function delLevelConfig()
+    {
+        $id = Input::get('id');
+        $this->handle->delLevelConfig($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+    public function addLevelConfig(Request $post)
+    {
+        $id = $post->id?$post->id:0;
+        $data = [
+            'title'=>$post->title,
+            'need'=>$post->need
+        ];
+        $this->handle->setLevelConfig($id,$data);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\LoginPost;
 use App\Http\Requests\UserAdressPost;
 use App\Http\Requests\UserInfoPost;
 use App\Libraries\Wxxcx;
+use App\Modules\Good\GoodHandle;
 use App\Modules\System\TxConfig;
 use App\Modules\User\UserHandle;
 use Illuminate\Http\Request;
@@ -227,5 +228,60 @@ class WeChatController extends Controller
 //        dump($data);
         $qrcode = $wx->get_http_array('https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token='.$token,$data,'json');
         return response()->make($qrcode,200,['content-type'=>'image/jpeg']);
+    }
+    public function getMyAttentions()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getUserAttentions($user_id,$page,$limit);
+        if (!empty($data['data'])){
+            foreach ($data['data'] as $datum){
+                $datum->user = $this->handle->getWeChatUserById($datum->attention_id);
+            }
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getMyFans()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getUserFans($user_id,$page,$limit);
+        if (!empty($data['data'])){
+            foreach ($data['data'] as $datum){
+                $datum->user = $this->handle->getWeChatUserById($datum->user_id);
+            }
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getUser()
+    {
+        $user_id = Input::get('user_id');
+        $data = $this->handle->getWeChatUserById($user_id);
+        if ($data){
+            $goodHandle = new GoodHandle();
+            $data->attentions = $this->handle->getUserAttentionCount($user_id);
+            $data->collects = $goodHandle->countUserCollects($user_id);
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getMyScore()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $data = $this->handle->getUserScore($user_id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
     }
 }

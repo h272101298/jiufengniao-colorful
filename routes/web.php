@@ -68,5 +68,9 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('order','OrderController@getOrder');
     Route::post('delivery/order','OrderController@deliveryOrder');
     Route::post('refund/order','OrderController@refundOrder');
+    Route::post('level/config','OrderController@addLevelConfig');
+    Route::delete('level/config','OrderController@delLevelConfig');
+    Route::get('level/config','OrderController@getLevelConfig');
+    Route::get('level/configs','OrderController@getLevelConfigs');
 //    Route::post('');
 });

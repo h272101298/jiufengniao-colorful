@@ -171,7 +171,7 @@ class GoodHandle
     {
         return GoodDetail::find($id);
     }
-    public function getDetails($page=1,$limit =10 ,$type_id = 0,$user_id=0,$format=0)
+    public function getDetails($page=1,$limit =10 ,$type_id = 0,$user_id=0,$format=0,$search='')
     {
         $db = DB::table('good_details');
         if ($type_id){
@@ -179,6 +179,9 @@ class GoodHandle
         }
         if ($user_id){
             $db->where('user_id','=',$user_id);
+        }
+        if (strlen($search)!=0){
+            $db->where('title','like','%'.$search.'%')->where('content','like','%'.$search.'%');
         }
         $count = $db->count();
         $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
@@ -247,5 +250,19 @@ class GoodHandle
             $collect->delete();
         }
         return true;
+    }
+    public function getUserCollects($user_id,$page=1,$limit=10)
+    {
+        $db = GoodCollect::where('user_id','=',$user_id);
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'count'=>$count,
+            'data'=>$data
+        ];
+    }
+    public function countUserCollects($user_id)
+    {
+        return GoodCollect::where('user_id','=',$user_id)->count();
     }
 }

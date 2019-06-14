@@ -62,3 +62,8 @@ Route::get('orders','OrderController@getUserOrders');
 Route::get('cancel/order','OrderController@cancelOrder');
 Route::get('confirm/order','OrderController@confirmOrder');
 Route::get('proxy/users','ProxyController@getProxyUsersApi');
+Route::get('collects','GoodController@getMyCollects');
+Route::get('attentions','WeChatController@getMyAttentions');
+Route::get('fans','WeChatController@getMyFans');
+Route::get('user','WeChatController@getUser');
+Route::get('score','WeChatController@getMyScore');

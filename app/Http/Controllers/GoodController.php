@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Modules\Good\GoodHandle;
+use App\Modules\Picture\PictureHandle;
 use App\Modules\User\UserHandle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -56,7 +57,7 @@ class GoodController extends Controller
     {
         $id = $post->id ? $post->id : 0;
         $good_id = $post->good_id ? $post->good_id : 0;
-        $type = $post->type ? $post->type : 1;
+        $type = $post->type ? $post->type : 0;
         $url = $post->url;
         $result = $this->handle->addBanner($id, [
             'good_id' => $good_id,
@@ -180,6 +181,12 @@ class GoodController extends Controller
         $result = $this->handle->addDetail(0, $data);
         $pics = $post->pics;
         if (!empty($pics)) {
+            $pictureHandle = new PictureHandle();
+            $pictureHandle->addPicture(0,[
+                'type'=>2,
+                'user_id'=>getRedisData($post->token),
+                'url'=>$pics[0]
+            ]);
             foreach ($pics as $pic) {
                 $this->handle->addDetailImage($result, $pic);
             }
@@ -195,11 +202,9 @@ class GoodController extends Controller
         $limit = Input::get('limit', 10);
         $type_id = Input::get('type_id', 0);
         $token = Input::get('token');
-        $user_id = 0;
-        if ($token){
-            $user_id = getRedisData($token);
-        }
-        $data = $this->handle->getDetails($page, $limit, $type_id, $user_id,1);
+        $search = Input::get('search','');
+        $user_id = Input::get('user_id',getRedisData($token));
+        $data = $this->handle->getDetails($page, $limit, $type_id, $user_id,1,$search);
         return jsonResponse([
             'msg' => 'ok',
             'data' => $data
@@ -281,6 +286,22 @@ class GoodController extends Controller
         }
         return jsonResponse([
             'msg'=>'ok'
+        ]);
+    }
+    public function getMyCollects()
+    {
+        $user_id = getRedisData(Input::get('token'));
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getUserCollects($user_id,$page,$limit);
+        if (!empty($data['data'])){
+            foreach ($data['data'] as $datum){
+                $datum->detail = $this->handle->getDetail($datum->detail_id);
+            }
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
         ]);
     }
 }
