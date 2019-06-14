@@ -93,5 +93,18 @@ class PictureController extends Controller
             'data'=>$data
         ]);
     }
+    public function checkPicture()
+    {
+        $id = Input::get('id');
+        $pass = Input::get('pass',2);
+        if ($pass==1){
+            $this->handle->addPicture($id,['state'=>1]);
+        }else{
+            $this->handle->delPicture($id);
+        }
+        return jsonResponse([
+            'msg'=>"ok"
+        ]);
+    }
 //    public function addPicture(){}
 }

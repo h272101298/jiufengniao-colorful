@@ -72,6 +72,7 @@ class PictureHandle
         if ($remove){
             $db->where('user_id','!=',$remove);
         }
+        $db->where('state','=',1);
         $count = $db->count();
         $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
         return [
