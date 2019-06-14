@@ -181,7 +181,7 @@ class GoodHandle
             $db->where('user_id','=',$user_id);
         }
         if (strlen($search)!=0){
-            $db->where('title','like','%'.$search.'%')->where('content','like','%'.$search.'%');
+            $db->where('title','like','%'.$search.'%');
         }
         $count = $db->count();
         $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
