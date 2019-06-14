@@ -55,3 +55,4 @@ Route::get('proxy/apply','ProxyController@getProxyApply');
 Route::get('orders','OrderController@getUserOrders');
 Route::get('cancel/order','OrderController@cancelOrder');
 Route::get('confirm/order','OrderController@confirmOrder');
+Route::get('proxy/users','ProxyController@getProxyUser');

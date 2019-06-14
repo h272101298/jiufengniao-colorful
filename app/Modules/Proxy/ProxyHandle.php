@@ -139,7 +139,13 @@ class ProxyHandle
     }
     public function getProxyUsers($user_id,$page=1,$limit=10)
     {
-        return ProxyList::where('proxy_id','=',$user_id)->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        $db = ProxyList::where('proxy_id','=',$user_id);
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'count'=>$count,
+            'data'=>$data
+        ];
     }
     public function getProxyList($page=1,$limit=10,$format=0)
     {

@@ -198,5 +198,22 @@ class ProxyController extends Controller
         $this->handle->addWithdraw($id,['state'=>$state]);
         return jsonResponse(['msg'=>'ok']);
     }
+    public function getProxyUser()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $user_id = getRedisData(Input::get('token'));
+        $data = $this->handle->getProxyUsers($user_id,$page,$limit);
+        if (!empty($data['data'])){
+            $userHandle = new UserHandle();
+            foreach ($data['data'] as $datum){
+                $datum->user = $userHandle->getWeChatUserById($datum->user_id);
+            }
+        }
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 
 }
