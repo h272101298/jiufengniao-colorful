@@ -280,9 +280,9 @@ class GoodController extends Controller
         $user_id = getRedisData(Input::get('token'));
         $check = $this->handle->checkDetailCollect($user_id,$detail_id);
         if ($check){
-            $this->handle->collectDetail($user_id,$detail_id);
-        }else{
             $this->handle->unCollectDetail($user_id,$detail_id);
+        }else{
+            $this->handle->collectDetail($user_id,$detail_id);
         }
         return jsonResponse([
             'msg'=>'ok'
