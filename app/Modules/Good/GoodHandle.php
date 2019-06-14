@@ -85,6 +85,10 @@ class GoodHandle
         }
         return false;
     }
+    public function delComment($id)
+    {
+        return Comment::find($id)->delete();
+    }
     public function getGoodComments($good_id)
     {
         return Comment::where('good_id','=',$good_id)->orderBy('id','DESC')->get();
@@ -220,5 +224,28 @@ class GoodHandle
     public function countLikeDetails($user_id)
     {
         return DetailLike::where('user_id','=',$user_id)->count();
+    }
+    public function checkDetailCollect($user_id,$detail_id)
+    {
+        return GoodCollect::where('user_id','=',$user_id)->where('detail_id','=',$detail_id)->count();
+    }
+    public function collectDetail($user_id,$detail_id)
+    {
+        $collect = GoodCollect::where('user_id','=',$user_id)->where('detail_id','=',$detail_id)->first();
+        if (empty($collect)){
+            $collect = new GoodCollect();
+            $collect->user_id = $user_id;
+            $collect->detail_id = $detail_id;
+            $collect->save();
+        }
+        return true;
+    }
+    public function unCollectDetail($user_id,$detail_id)
+    {
+        $collect = GoodCollect::where('user_id','=',$user_id)->where('detail_id','=',$detail_id)->first();
+        if ($collect){
+            $collect->delete();
+        }
+        return true;
     }
 }

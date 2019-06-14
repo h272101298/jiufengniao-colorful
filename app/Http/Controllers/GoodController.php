@@ -209,12 +209,16 @@ class GoodController extends Controller
     {
         $id = Input::get('id');
         $detail = $this->handle->getDetail($id);
+        $user_id = getRedisData(Input::get('token'));
         if ($detail){
             $userHandle = new UserHandle();
             $detail->user = $userHandle->getWeChatUserById($detail->user_id);
             $detail->images = $this->handle->getDetailImages($detail->id);
             $detail->likes = $this->handle->countDetailLikes($detail->id);
             $comments = $this->handle->getGoodComments($detail->id);
+            $detail->userAttention = $userHandle->checkAttentionUser($user_id,$detail->user_id);
+            $detail->like = $this->handle->checkLikeDetail($user_id,$detail->id);
+            $detail->collect = $this->handle->checkDetailCollect($user_id,$detail->id);
             if (!empty($comments)){
                 foreach ($comments as $comment){
                     $comment->user = $userHandle->getWeChatUserById($comment->user_id);
@@ -226,6 +230,57 @@ class GoodController extends Controller
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$detail
+        ]);
+    }
+    public function addComment(Request $post)
+    {
+        $id= $post->id?$post->id:0;
+        $detail_id = $post->detail_id;
+        $user_id = getRedisData($post->token);
+        $content = $post->get('content');
+        $this->handle->addComment($id,[
+            'user_id'=>$user_id,
+            'good_id'=>$detail_id,
+            'content'=>$content
+        ]);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+    public function delComment()
+    {
+        $id = Input::get('id');
+        $this->handle->delComment($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+    public function addLike()
+    {
+        $detail_id = Input::get('detail_id');
+        $user_id = getRedisData(Input::get('token'));
+        $check = $this->handle->checkLikeDetail($user_id,$detail_id);
+        if ($check){
+            $this->handle->dislikeDetail($user_id,$detail_id);
+        }else{
+            $this->handle->likeDetail($user_id,$detail_id);
+        }
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+    public function addCollect()
+    {
+        $detail_id = Input::get('detail_id');
+        $user_id = getRedisData(Input::get('token'));
+        $check = $this->handle->checkDetailCollect($user_id,$detail_id);
+        if ($check){
+            $this->handle->collectDetail($user_id,$detail_id);
+        }else{
+            $this->handle->unCollectDetail($user_id,$detail_id);
+        }
+        return jsonResponse([
+            'msg'=>'ok'
         ]);
     }
 }
