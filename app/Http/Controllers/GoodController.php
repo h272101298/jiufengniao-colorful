@@ -296,7 +296,9 @@ class GoodController extends Controller
         $data = $this->handle->getUserCollects($user_id,$page,$limit);
         if (!empty($data['data'])){
             foreach ($data['data'] as $datum){
-                $datum->detail = $this->handle->getDetail($datum->detail_id);
+                $detail = $this->handle->getDetail($datum->detail_id);
+                $detail->images = $this->handle->getDetailImages($detail->id);
+                $datum->detail = $detail;
             }
         }
         return jsonResponse([
