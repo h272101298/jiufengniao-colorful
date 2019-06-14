@@ -19,11 +19,13 @@ class PictureController extends Controller
     {
         $user_id = getRedisData($post->token);
         $type = $post->type?$post->type:2;
+        $state = $type==2?0:1;
         if ($this->handle->addPicture(0,
             [
                 'user_id'=>$user_id,
                 'url'=>$post->url,
                 'type'=>$type,
+                'state'=>$state
             ]));
         return jsonResponse([
             'msg'=>'ok'

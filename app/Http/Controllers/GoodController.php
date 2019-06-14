@@ -181,12 +181,6 @@ class GoodController extends Controller
         $result = $this->handle->addDetail(0, $data);
         $pics = $post->pics;
         if (!empty($pics)) {
-            $pictureHandle = new PictureHandle();
-            $pictureHandle->addPicture(0,[
-                'type'=>2,
-                'user_id'=>getRedisData($post->token),
-                'url'=>$pics[0]
-            ]);
             foreach ($pics as $pic) {
                 $this->handle->addDetailImage($result, $pic);
             }
