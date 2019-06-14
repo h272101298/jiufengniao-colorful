@@ -214,8 +214,14 @@ class GoodController extends Controller
             $detail->user = $userHandle->getWeChatUserById($detail->user_id);
             $detail->images = $this->handle->getDetailImages($detail->id);
             $detail->likes = $this->handle->countDetailLikes($detail->id);
-            $detail->comments = $this->handle->getGoodComments($detail->id);
-            $detail->commentCount = count($detail->comments);
+            $comments = $this->handle->getGoodComments($detail->id);
+            if (!empty($comments)){
+                foreach ($comments as $comment){
+                    $comment->user = $userHandle->getWeChatUserById($comment->user_id);
+                }
+            }
+            $detail->comments = $comments;
+            $detail->commentCount = count($comments);
         }
         return jsonResponse([
             'msg'=>'ok',
