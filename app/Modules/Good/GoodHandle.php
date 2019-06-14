@@ -192,7 +192,7 @@ class GoodHandle
     }
     public function likeDetail($user_id,$detail_id)
     {
-        $like = DetailLike::where('user_id','=',$user_id)->where('$detail_id','=',$detail_id)->first();
+        $like = DetailLike::where('user_id','=',$user_id)->where('detail_id','=',$detail_id)->first();
         if (empty($like)){
             $like = new DetailLike();
             $like->user_id = $user_id;
@@ -203,11 +203,11 @@ class GoodHandle
     }
     public function checkLikeDetail($user_id,$detail_id)
     {
-        return DetailLike::where('user_id','=',$user_id)->where('$detail_id','=',$detail_id)->count();
+        return DetailLike::where('user_id','=',$user_id)->where('detail_id','=',$detail_id)->count();
     }
     public function dislikeDetail($user_id,$detail_id)
     {
-        $like = DetailLike::where('user_id','=',$user_id)->where('$detail_id','=',$detail_id)->first();
+        $like = DetailLike::where('user_id','=',$user_id)->where('detail_id','=',$detail_id)->first();
         if ($like){
             $like->delete();
         }
@@ -215,7 +215,7 @@ class GoodHandle
     }
     public function countDetailLikes($detail_id)
     {
-        return DetailLike::where('$detail_id','=',$detail_id)->count();
+        return DetailLike::where('detail_id','=',$detail_id)->count();
     }
     public function countLikeDetails($user_id)
     {
