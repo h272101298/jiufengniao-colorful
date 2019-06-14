@@ -46,7 +46,18 @@ class PictureController extends Controller
     {
         $page = Input::get('page',1);
         $limit = Input::get('limit',10);
-        $data = $this->handle->getPictures($page,$limit,1,0,2);
+        $type = Input::get('type',1);
+        $data = $this->handle->getPictures($page,$limit,$type,0);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function getPicturesApi()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getPicturesApi($page,$limit,1,0,2);
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$data

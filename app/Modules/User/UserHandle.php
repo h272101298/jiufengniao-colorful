@@ -166,7 +166,7 @@ class UserHandle
     }
     public function getUserScore($user_id)
     {
-        $score = UserScore::where('user_id','=',$user_id)->pluck('score')->first();
+        $score = UserScore::where('user_id','=',$user_id)->first();
         if (empty($score)){
             return 0;
         }

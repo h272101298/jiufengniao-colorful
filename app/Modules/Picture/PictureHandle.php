@@ -55,7 +55,7 @@ class PictureHandle
             'data'=>$db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get()
         ];
     }
-    public function getPictures($page=1,$limit=10,$official=0,$user_id=0,$type=0,$remove=0)
+    public function getPicturesApi($page=1,$limit=10,$official=0,$user_id=0,$type=0,$remove=0)
     {
         $db = DB::table('pictures');
         if ($official){
@@ -66,6 +66,22 @@ class PictureHandle
         if ($user_id){
             $db->where('user_id','=',$user_id);
         }
+        if ($type){
+            $db->where('type','=',$type);
+        }
+        if ($remove){
+            $db->where('user_id','!=',$remove);
+        }
+        $count = $db->count();
+        $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'data'=>$data,
+            'count'=>$count
+        ];
+    }
+    public function getPictures($page=1,$limit=10,$type=0,$remove=0)
+    {
+        $db = DB::table('pictures');
         if ($type){
             $db->where('type','=',$type);
         }
