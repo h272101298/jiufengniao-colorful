@@ -76,7 +76,7 @@ class GoodController extends Controller
     {
         $page = Input::get('page', 1);
         $limit = Input::get('limit', 10);
-        $type = Input::get('type', 1);
+        $type = Input::get('type', 0);
         $data = $this->handle->getBanners($page, $limit, $type);
         return jsonResponse([
             'msg' => 'ok',
