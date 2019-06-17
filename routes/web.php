@@ -69,7 +69,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::post('delivery/order','OrderController@deliveryOrder');
     Route::post('refund/order','OrderController@refundOrder');
     Route::post('level/config','SystemController@addLevelConfig');
-    Route::delete('level/config','SystemController@delLevelConfig');
+    Route::get('del/level/config','SystemController@delLevelConfig');
     Route::get('level/config','SystemController@getLevelConfig');
     Route::get('level/configs','SystemController@getLevelConfigs');
 //    Route::get('pictures','PictureController@getPictures');
