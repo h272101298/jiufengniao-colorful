@@ -328,6 +328,12 @@ class OrderController extends Controller
             $goodHandle = new GoodHandle();
             $data->product = $goodHandle->getGood($data->product_id);
         }
+        if ($data->express_id!=0){
+            $data->express = $this->handle->getExpress($data->express_id);
+        }
+        $userHandle = new UserHandle();
+        $data->user = $userHandle->getWeChatUserById($data->user_id);
+        $data->address = $this->handle->getOrderAddress($data->id);
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$data

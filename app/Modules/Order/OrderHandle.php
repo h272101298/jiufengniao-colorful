@@ -151,5 +151,9 @@ class OrderHandle
     {
         return Express::find($id)->delete();
     }
+    public function getOrderAddress($order_id)
+    {
+        return OrderAddress::where('order_id','=',$order_id)->first();
+    }
 
 }
