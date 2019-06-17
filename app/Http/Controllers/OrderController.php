@@ -56,6 +56,7 @@ class OrderController extends Controller
                     if (empty($userScore)||$userScore->real_score<$price){
                         throw new \Exception('积分不足！');
                     }
+                    $userHandle->addUserScore($user_id,0-$price);
                     $state = 2;
                     break;
                 case 'group':
