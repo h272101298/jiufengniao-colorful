@@ -217,6 +217,7 @@ class GoodController extends Controller
             $comments = $this->handle->getGoodComments($detail->id);
             $detail->userAttention = $userHandle->checkAttentionUser($user_id,$detail->user_id);
             $detail->like = $this->handle->checkLikeDetail($user_id,$detail->id);
+            $detail->good = $this->handle->getGood($detail->good_id);
             $detail->collect = $this->handle->checkDetailCollect($user_id,$detail->id);
             if (!empty($comments)){
                 foreach ($comments as $comment){
