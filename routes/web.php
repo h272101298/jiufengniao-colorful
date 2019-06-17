@@ -72,7 +72,7 @@ Route::group(['middleware'=>['auth']],function (){
     Route::delete('level/config','OrderController@delLevelConfig');
     Route::get('level/config','OrderController@getLevelConfig');
     Route::get('level/configs','OrderController@getLevelConfigs');
-    Route::get('pictures','PictureController@getPictures');
+//    Route::get('pictures','PictureController@getPictures');
     Route::get('check/picture','PictureController@checkPicture');
 //    Route::post('');
 });
