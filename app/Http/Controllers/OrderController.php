@@ -51,7 +51,7 @@ class OrderController extends Controller
                     $scoreHandle = new ScoreHandle();
                     $product = $scoreHandle->getScoreProduct($product_id);
                     $origin_price = $product->score;
-                    $price = $origin_price;
+                    $price = $origin_price*$number;
                     $userScore = $userHandle->getUserScore($user_id);
                     if (empty($userScore)||$userScore->real_score<$price){
                         throw new \Exception('积分不足！');
