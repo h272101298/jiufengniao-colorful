@@ -28,7 +28,7 @@ Route::get('user/info','WeChatController@getUserInfo');//proxyApply
 Route::get('user/amount','ProxyController@getUserProxyAmount');//proxyApply
 Route::get('proxy/users','ProxyController@getProxyUsers');//proxyApply
 Route::get('user/pictures','PictureController@getUserPictures');//proxyApply
-Route::get('pictures','PictureController@getPicturesApi');//proxyApply
+Route::get('pictures','PictureController@getPictures');//proxyApply
 Route::post('picture','PictureController@addPicture');//
 Route::get('types','GoodController@getTypes');
 Route::get('goods','GoodController@getGoods');
