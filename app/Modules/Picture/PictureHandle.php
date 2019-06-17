@@ -80,14 +80,11 @@ class PictureHandle
             'count'=>$count
         ];
     }
-    public function getPictures($page=1,$limit=10,$type=0,$remove=0)
+    public function getPictures($page=1,$limit=10,$type=0)
     {
         $db = DB::table('pictures');
         if ($type){
             $db->where('type','=',$type);
-        }
-        if ($remove){
-            $db->where('user_id','!=',$remove);
         }
         $count = $db->count();
         $data = $db->orderBy('id','DESC')->limit($limit)->offset(($page-1)*$limit)->get();

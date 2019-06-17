@@ -47,7 +47,7 @@ class PictureController extends Controller
         $page = Input::get('page',1);
         $limit = Input::get('limit',10);
         $type = Input::get('type',1);
-        $data = $this->handle->getPictures($page,$limit,$type,0);
+        $data = $this->handle->getPictures($page,$limit,$type);
         return jsonResponse([
             'msg'=>'ok',
             'data'=>$data
