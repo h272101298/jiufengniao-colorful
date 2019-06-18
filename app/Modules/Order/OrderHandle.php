@@ -159,12 +159,12 @@ class OrderHandle
     public function getExpressInfo($order_id)
     {
         $order = Order::find($order_id);
-        $search = new ExpressSearch('1358357','4ca2f3ce-5025-4d03-af5a-60bb64e1ffd1');
+        $search = new ExpressSearch('1542740','a8fa1de3-7e0d-4f14-a193-64267ebdaaad');
         $express = Express::find($order->express_id);
         $data = $search->getOrderTracesByJson($express->code,$order->express_number);
         $data = json_decode($data);
         if (!isset($data->Traces)){
-            return $data;
+            return [];
         }
         $data = $data->Traces;
         $data = array_reverse($data);
