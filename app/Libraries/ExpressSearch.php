@@ -33,7 +33,7 @@ class ExpressSearch
             'RequestData' => urlencode($requestData) ,
             'DataType' => '2',
         );
-        $datas['DataSign'] = encrypt($requestData, AppKey);
+        $datas['DataSign'] = encrypt($requestData, $this->AppKey);
         $result=$this->sendPost($this->ReqURL, $datas);
 
         //根据公司业务处理返回的信息......
