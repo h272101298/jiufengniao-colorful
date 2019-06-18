@@ -20,20 +20,19 @@ class ExpressSearch
      * Json方式 查询订单物流轨迹
      */
     function getOrderTracesByJson($code,$logisticCode,$orderNumber=''){
-        $requestData =[
-            'OrderCode'=>$orderNumber,
-            'ShipperCode'=>$code,
-            'LogisticCode'=>$logisticCode
-        ];
-        $requestData= json_encode($requestData);
-
+        $requestData = sprintf("{'OrderCode':'','ShipperCode':'%s','LogisticCode':'%s'}",$code,$logisticCode);
+        $requestData = utf8_decode($requestData);
+//        $requestData= json_encode($requestData);
+//        print_r($requestData);
         $datas = array(
             'EBusinessID' => $this->EBusinessID,
             'RequestType' => '1002',
             'RequestData' => urlencode($requestData) ,
             'DataType' => '2',
         );
-        $datas['DataSign'] = encrypt($requestData, $this->AppKey);
+        $datas['DataSign'] = $this->encrypt($requestData, $this->AppKey);
+//        var_dump($datas);
+//        print_r($datas['DataSign']);
         $result=$this->sendPost($this->ReqURL, $datas);
 
         //根据公司业务处理返回的信息......
