@@ -164,7 +164,7 @@ class OrderHandle
         $data = $search->getOrderTracesByJson($express->code,$order->express_number);
         $data = json_decode($data);
         if (!isset($data->Traces)){
-            return false;
+            return $data;
         }
         $data = $data->Traces;
         $data = array_reverse($data);
