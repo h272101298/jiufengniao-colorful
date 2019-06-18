@@ -67,3 +67,5 @@ Route::get('attentions','WeChatController@getMyAttentions');
 Route::get('fans','WeChatController@getMyFans');
 Route::get('user','WeChatController@getUser');
 Route::get('score','WeChatController@getMyScore');
+
+Route::get('express/info','OrderController@getExpressInfo');
