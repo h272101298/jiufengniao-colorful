@@ -396,4 +396,13 @@ class OrderController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function getExpressInfo()
+    {
+        $id = Input::get('id');
+        $data = $this->handle->getExpressInfo($id);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }

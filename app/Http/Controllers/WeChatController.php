@@ -7,6 +7,7 @@ use App\Http\Requests\UserAdressPost;
 use App\Http\Requests\UserInfoPost;
 use App\Libraries\Wxxcx;
 use App\Modules\Good\GoodHandle;
+use App\Modules\Proxy\ProxyHandle;
 use App\Modules\System\TxConfig;
 use App\Modules\User\UserHandle;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class WeChatController extends Controller
     {
         $WX = new Wxxcx(\config('wxxcx.app_id'),\config('wxxcx.app_secret'));
         $sessionKey = $WX->getSessionKey($post->code);
+        $proxy_id = $post->proxy_id;
         if ($sessionKey){
             $info = $WX->decode($post->encryptedData,$post->iv);
             $info = json_decode($info);
@@ -32,6 +34,14 @@ class WeChatController extends Controller
                 $token = CreateNonceStr(10);
                 setUserToken($token,$user->id);
                 $user->save();
+                $proxyHandle = new ProxyHandle();
+                $is_proxy = $proxyHandle->isProxy($proxy_id);
+                if ($is_proxy){
+                    $proxyHandle->addProxyList(0,[
+                        'user_id'=>$user,
+                        'proxy_id'=>$proxy_id
+                    ]);
+                }
                 return response()->json([
                     'msg'=>'ok',
                     'data'=>[
@@ -40,18 +50,26 @@ class WeChatController extends Controller
                     ]
                 ]);
             }else{
-                $user = $this->handle->addWeChatUser(0, [
+                $result = $this->handle->addWeChatUser(0, [
                     'open_id'=>$info->openId,
                     'nickname'=>$info->nickName,
                     'avatarUrl'=>$info->avatarUrl
                     ]);
                 $token = CreateNonceStr(10);
-                setUserToken($token,$user->id);
+                setUserToken($token,$result);
+                $proxyHandle = new ProxyHandle();
+                $is_proxy = $proxyHandle->isProxy($proxy_id);
+                if ($is_proxy){
+                    $proxyHandle->addProxyList(0,[
+                        'user_id'=>$result,
+                        'proxy_id'=>$proxy_id
+                    ]);
+                }
                 return response()->json([
                     'msg'=>'ok',
                     'data'=>[
                         'token'=>$token,
-                        'id'=>$user->id
+                        'id'=>$result
                     ]
                 ]);
             }

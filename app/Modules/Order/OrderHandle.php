@@ -9,6 +9,7 @@
 namespace App\Modules\Order;
 
 
+use App\Libraries\ExpressSearch;
 use Illuminate\Support\Facades\DB;
 use function PHPSTORM_META\type;
 
@@ -154,6 +155,20 @@ class OrderHandle
     public function getOrderAddress($order_id)
     {
         return OrderAddress::where('order_id','=',$order_id)->first();
+    }
+    public function getExpressInfo($order_id)
+    {
+        $order = Order::find($order_id);
+        $search = new ExpressSearch('1542740','a8fa1de3-7e0d-4f14-a193-64267ebdaaad');
+        $express = Express::find($order->express);
+        $data = $search->getOrderTracesByJson($express->code,$order->express_number);
+        $data = json_decode($data);
+        if (!isset($data->Traces)){
+            return false;
+        }
+        $data = $data->Traces;
+        $data = array_reverse($data);
+        return $data;
     }
 
 }

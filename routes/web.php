@@ -74,5 +74,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('level/configs','SystemController@getLevelConfigs');
 //    Route::get('pictures','PictureController@getPictures');
     Route::get('check/picture','PictureController@checkPicture');
+    Route::get('express/info','OrderController@getExpressInfo');
 //    Route::post('');
 });

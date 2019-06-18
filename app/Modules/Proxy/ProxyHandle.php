@@ -164,6 +164,17 @@ class ProxyHandle
             'count'=>$count
         ];
     }
+    public function addProxyList($id,$data)
+    {
+        $list = $id?ProxyList::find($id):new ProxyList();
+        foreach ($data as $key=>$value){
+            $list->$key = $value;
+        }
+        if ($list->save()){
+            return $list->id;
+        }
+        return false;
+    }
     public function getProxyAmountConfig()
     {
         return ProxyAmountConfig::first();
