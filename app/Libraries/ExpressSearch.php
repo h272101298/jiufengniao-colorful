@@ -9,7 +9,7 @@ class ExpressSearch
     private $EBusinessID;
     private $AppKey;
     private $ReqURL;
-    public function __construct($businessId,$appKey,$reqUrl='http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx')
+    public function __construct($businessId,$appKey,$reqUrl='http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx')
     {
         $this->AppKey = $appKey;
         $this->ReqURL = $reqUrl;
