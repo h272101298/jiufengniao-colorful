@@ -113,5 +113,9 @@ class SystemHandle
         $poster->delete();
         return true;
     }
+    public function getPosterConfigByTitle($title)
+    {
+        return PosterConfig::where('title','=',$title)->first();
+    }
 
 }

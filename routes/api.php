@@ -17,6 +17,7 @@ Route::post('login','WeChatController@createUser');//Login
 Route::get('qrcode','WeChatController@makeQrcode');//Login
 Route::post('pay/notify','OrderController@notifyOrder');
 Route::get('poster/configs','SystemController@getPosterConfigs');
+Route::get('poster/config','SystemController@getPosterConfig');
 Route::post('proxy/apply','ProxyController@addProxyApply');//proxyApply
 Route::post('address','WeChatController@addUserAddress');//proxyApply
 Route::delete('address','WeChatController@delUserAddress');//proxyApply

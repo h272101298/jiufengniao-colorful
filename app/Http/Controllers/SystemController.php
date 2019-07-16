@@ -188,4 +188,13 @@ class SystemController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function getPosterConfig()
+    {
+        $title = Input::get('title');
+        $data = $this->handle->getPosterConfigByTitle($title);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
 }
