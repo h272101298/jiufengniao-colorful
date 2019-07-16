@@ -86,5 +86,32 @@ class SystemHandle
             'count'=>$count
         ];
     }
+    public function setPosterConfig($id,$data)
+    {
+        $poster = $id?PosterConfig::find($id):new PosterConfig();
+        foreach ($data as $key=>$value){
+            $poster->$key = $value;
+        }
+        if ($poster->save()){
+            return $poster->id;
+        }
+        return false;
+    }
+    public function getPosterConfigs($page,$limit)
+    {
+        $db = DB::table('poster_configs');
+        $count = $db->count();
+        $data = $db->limit($limit)->offset(($page-1)*$limit)->get();
+        return [
+            'count'=>$count,
+            'data'=>$data
+        ];
+    }
+    public function delPosterConfig($id)
+    {
+        $poster = PosterConfig::find($id);
+        $poster->delete();
+        return true;
+    }
 
 }

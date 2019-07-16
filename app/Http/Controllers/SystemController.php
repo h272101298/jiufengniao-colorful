@@ -159,4 +159,33 @@ class SystemController extends Controller
             'msg'=>'ok'
         ]);
     }
+    public function addPosterConfig(Request $post)
+    {
+        $id = $post->id?$post->id:0;
+        $this->handle->setPosterConfig($id,[
+            'href'=>$post->href,
+            'title'=>$post->title
+        ]);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
+    public function getPosterConfigs()
+    {
+        $page = Input::get('page',1);
+        $limit = Input::get('limit',10);
+        $data = $this->handle->getPosterConfigs($page,$limit);
+        return jsonResponse([
+            'msg'=>'ok',
+            'data'=>$data
+        ]);
+    }
+    public function delPosterConfig()
+    {
+        $id = Input::get('id');
+        $this->handle->delPosterConfig($id);
+        return jsonResponse([
+            'msg'=>'ok'
+        ]);
+    }
 }
