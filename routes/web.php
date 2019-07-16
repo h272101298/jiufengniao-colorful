@@ -77,6 +77,6 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('express/info','OrderController@getExpressInfo');
     Route::post('poster/config','SystemController@addPosterConfig');
     Route::get('poster/configs','SystemController@getPosterConfigs');
-    Route::delete('poster/config','SystemController@delPosterConfig');
+    Route::get('del/poster/config','SystemController@delPosterConfig');
 //    Route::post('');
 });
